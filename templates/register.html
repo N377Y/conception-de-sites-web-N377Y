@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+    <form action="/register" method="post" enctype="multipart/form-data">
+        <div class="regis">
+            <input autocomplete="off" autofocus name="mail" placeholder="E-mail" type="email" required>
+            <input autocomplete="off" autofocus name="name" placeholder="Name" type="text" required>
+            <input autocomplete="off" autofocus name="username" placeholder="Username" type="text" required>
+            <input autocomplete="off" autofocus name="pwd" placeholder="Password" type="password" required>
+            <button type="submit">Register</button>
+        </div>
+    </form>
+{% endblock %}

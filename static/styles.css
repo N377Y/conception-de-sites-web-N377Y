@@ -1,0 +1,18 @@
+.centered-container {
+    background-color: aliceblue;
+    width: 50%;
+    text-align: center;
+    position: absolute;
+    left: 25%;
+    top: 40%;
+
+    border-radius: 10mm;
+    border: 1mm;
+    border-style: solid;
+    border-color: whitesmoke;
+    
+}
+
+body {
+    background-color: azure;
+}

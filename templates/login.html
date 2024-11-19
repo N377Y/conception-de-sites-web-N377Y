@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <div class="centered-container">
+        <h1>Welcome</h1>
+        {% if name %}
+            <!-- TODO -->
+            You are logged in as {{ name }}. <a href="/logout">Log out</a>.
+        {% else %}
+                <form action="/login" method="post">
+                    <input autocomplete="off" autofocus name="name" placeholder="Username" type="text" required>
+                    <input autocomplete="off" autofocus name="pwd" placeholder="Password" type="password" required>
+                    <button type="submit">Log In</button>
+                </form>
+                <p><a href="{{ url_for('register') }}">Register</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

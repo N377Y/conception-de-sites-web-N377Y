@@ -5,10 +5,11 @@
 {% block content %}
     <div class="centered-container">
         <h1>Welcome</h1>
-        {% if 'user' in session %}
+        {% if name %}
             <!-- TODO -->
+            You are logged in as {{ name }}. <a href="/logout">Log out</a>.
         {% else %}
-            <p><a href="{{ url_for('login') }}">Login</a></p>
+            <p><a href="/login">Login</a></p>
             <p><a href="{{ url_for('register') }}">Register</a></p>
         {% endif %}
     </div>
