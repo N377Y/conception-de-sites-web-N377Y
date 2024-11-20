@@ -7,3 +7,9 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     profile_picture TEXT
 );
+
+CREATE TABLE games (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    gameCode TEXT NOT NULL,
+    state TEXT DEFAULT 'waiting'
+    );

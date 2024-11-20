@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <body>
-    <div class="acceuil">
+    <div id="acceuil">
         <!-- Navigation -->
         <nav>
             <a href="#features">Features</a>
@@ -10,11 +10,11 @@
         </nav>
 
         <!-- Hero Section -->
-        <div class="hero">
+        <div id="hero">
             <h1>Explore Endless Possibilities</h1>
             <p>Join our platform to access exclusive content and connect with a vibrant community.</p>
-            <button onclick="location.href='/start_game'">Start Game</button>
-            <button onclick="location.href='/join_game'">Join Game</button>
+            <button onclick="location.href='/start_game'" id="start">Start Game</button>
+            <button id="join">Join Game</button>
         </div>
 
         <!-- Features Section -->
@@ -35,6 +35,162 @@
                 <p>Our dedicated team is always available to assist you with any queries or issues.</p>
             </div>
         </section>
+        <a href="/logout">Log out</a>
     </div>
+
+    <div id="ball" hidden>
+        <button id="closeButton1">Close</button>
+       <h1>Game Code</h1> 
+    </div>
+    <div id="door" hidden >
+        <button id="closeButton2">Close</button>
+        <h1>Enter Code</h1>
+        <form id="code-form">
+            <div class="code-container">
+                <!-- 6 cases pour chaque chiffre -->
+                <input type="text" maxlength="1" pattern="\d" required>
+                <input type="text" maxlength="1" pattern="\d" required>
+                <input type="text" maxlength="1" pattern="\d" required>
+                <input type="text" maxlength="1" pattern="\d" required>
+                <input type="text" maxlength="1" pattern="\d" required>
+                <input type="text" maxlength="1" pattern="\d" required>
+            </div>
+            <button type="submit" id="validate">Valider</button>
+        </form>
+    </div>
+
 </body>
+<script>
+    document.getElementById('start').onclick = async function (e) {
+        e.preventDefault();
+
+        // Get the element to display the result
+        const codebox = document.getElementById('ball');
+        codebox.removeAttribute('hidden');
+        const principal = document.getElementById('acceuil');
+        principal.style.filter = 'blur(5px)';;
+
+        try {
+            // Send the POST request to the server
+            const response = await fetch('/start_game', {
+                method: 'POST'
+            });
+
+            // Check if the response is OK
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            // Parse the JSON response
+            const code = await response.json();
+
+            // Create a new paragraph element to display the result
+
+            const bigBox = document.createElement('div');
+            bigBox.id = "code";
+            code.forEach((num) => {
+                // Create a new div element for each number
+                const boxElement = document.createElement('div');
+                boxElement.textContent = num; // Set the number as the content
+                boxElement.style.color = 'darkgreen';
+                boxElement.style.backgroundColor = 'white';
+                boxElement.style.border = '1px solid darkgreen';
+                boxElement.style.padding = '10px';
+                boxElement.style.margin = '5px';
+                boxElement.style.display = 'inline-block'; // Display elements side-by-side
+                boxElement.style.borderRadius = '5px';
+                boxElement.style.fontSize = '16px';
+                bigBox.append(boxElement);
+        });
+        // Append the box to the codebox container
+        codebox.appendChild(bigBox);
+
+        } catch (error) {
+            console.error('Error:', error);
+
+            // Create and append an error message
+            const errorMessage = document.createElement('p');
+            errorMessage.style.color = "red";
+            errorMessage.innerHTML = `<strong>Error:</strong> ${error.message}`;
+            codebox.appendChild(errorMessage);
+        }
+    };
+
+    // Close button logic
+    document.getElementById('closeButton1').onclick = function () {
+            const codebox = document.getElementById('ball');
+            const principal = document.getElementById('acceuil');
+            const code = document.getElementById('code')
+            // Reset the codebox to its initial state
+            codebox.setAttribute('hidden', 'true'); 
+            // Hide the codebox by removing it from the DOM
+            code.remove();
+            principal.style.filter = 'blur(0px)';
+
+
+        };
+        
+    document.getElementById('join').onclick = async function (e) {
+        e.preventDefault();
+
+        // Get the element to display the result
+        const codebox = document.getElementById('door');
+        codebox.removeAttribute('hidden');
+        const principal = document.getElementById('acceuil');
+        principal.style.filter = 'blur(5px)';;
+    };
+    const inputs = document.querySelectorAll(".code-container input");
+
+        // Permet de passer automatiquement au champ suivant
+        inputs.forEach((input, index) => {
+            input.addEventListener("input", (event) => {
+                const value = event.target.value;
+                if (value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            // Permet de revenir au champ précédent si on efface
+            input.addEventListener("keydown", (event) => {
+                if (event.key === "Backspace" && index > 0 && !input.value) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        // Gestion du formulaire
+        document.getElementById('validate').onclick = async function (e) {
+            event.preventDefault();
+
+            // Récupérer les valeurs des cases
+            const code = Array.from(inputs).map(input => input.value).join("");
+
+            if (code.length === 6) {
+                console.log("Code soumis :", code);
+                // Envoyer au backend (Exemple avec fetch)
+
+                        fetch('/join_game', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ game_code: code })
+                        })
+                        .then(response => response.json())
+                        .then(data => alert(data.message || data.error));
+                    }
+
+                
+            };
+
+        document.getElementById('closeButton2').onclick = function () {
+            const codebox = document.getElementById('door');
+            const principal = document.getElementById('acceuil');
+            // Reset the codebox to its initial state
+            codebox.setAttribute('hidden', 'true'); 
+            principal.style.filter = 'blur(0px)';
+
+
+        };
+
+</script>
+
 {% endblock %}

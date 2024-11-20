@@ -5,10 +5,15 @@ from flask_session import Session
 from cs50 import SQL
 import bcrypt
 from werkzeug.utils import secure_filename
+from routes.parties import parties_routes
+from flask_cors import CORS
+
+
 
 app = Flask(__name__)
+app.register_blueprint(parties_routes)  # Register the blueprint
 app.secret_key = "myKey"
-
+CORS(app)
 # Configure session
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -90,7 +95,7 @@ def login():
         session["username"] = user["username"]
 
         # Redirige vers le profil de l'utilisateur
-        return render_template("acceuil.html")
+        return redirect(url_for("user_profile", user_id = user["id"]))
 
     return render_template("login.html")
 
@@ -179,7 +184,7 @@ def user_profile(user_id):
         return "User not found", 404
 
     user = rows[0]
-    return render_template("profile.html", user=user)
+    return render_template("acceuil.html", user=user)
 
 
 
