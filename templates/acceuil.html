@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block body %}
+<body>
+    <div class="acceuil">
+        <!-- Navigation -->
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Explore Endless Possibilities</h1>
+            <p>Join our platform to access exclusive content and connect with a vibrant community.</p>
+            <button onclick="location.href='/start_game'">Start Game</button>
+            <button onclick="location.href='/join_game'">Join Game</button>
+        </div>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="feature">
+                <img src="https://via.placeholder.com/100" alt="Feature 1">
+                <h3>Easy to Use</h3>
+                <p>Our platform is designed with simplicity in mind, making it accessible for everyone.</p>
+            </div>
+            <div class="feature">
+                <img src="https://via.placeholder.com/100" alt="Feature 2">
+                <h3>Secure</h3>
+                <p>Your data and privacy are our top priorities. We ensure the highest level of security.</p>
+            </div>
+            <div class="feature">
+                <img src="https://via.placeholder.com/100" alt="Feature 3">
+                <h3>24/7 Support</h3>
+                <p>Our dedicated team is always available to assist you with any queries or issues.</p>
+            </div>
+        </section>
+    </div>
+</body>
+{% endblock %}

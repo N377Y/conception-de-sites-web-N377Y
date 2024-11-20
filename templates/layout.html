@@ -11,6 +11,10 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> -->
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <img src="https://www.foosball-society.com/files/wp-content/uploads/2016/03/logo-6bd865941f38976596fb6e0f3b53c661.png" alt="Profile Picture" style="width:300px;height:70px;" class="profile">
+    </header>
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
@@ -21,5 +25,9 @@
     
     {% block content %}{% endblock %}
      {% block body %}{% endblock %} 
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Your Company. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>

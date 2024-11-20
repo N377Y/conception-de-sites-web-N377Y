@@ -88,10 +88,9 @@ def login():
         # Stocke les informations utilisateur dans la session
         session["user_id"] = user["id"]
         session["username"] = user["username"]
-        flash("Login successful!", "success")
 
         # Redirige vers le profil de l'utilisateur
-        return redirect(url_for("user_profile", user_id=user["id"]))
+        return render_template("acceuil.html")
 
     return render_template("login.html")
 
