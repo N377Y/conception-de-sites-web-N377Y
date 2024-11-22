@@ -24,42 +24,61 @@ else:
 
 @parties_routes.route('/start_game', methods=['POST'])
 def start_game():
-    # Generate a list of 6 random numbers between 0 and 9
+    # Generate a random game code
     num = [random.randint(0, 9) for _ in range(6)]
-
-    # Convert the list to a string
     game_code = ''.join(map(str, num))
 
-    # Insérer la partie dans la base de données
+    # Insert the game in the database with the initial state 'waiting'
     db.execute(
         "INSERT INTO games (gameCode, state) VALUES (?, ?)",
         game_code, "waiting"
     )
 
-    # Enregistrer la partie dans la session
+    # Store game code in session
     session['game_code'] = game_code
+    session['player_role'] = 'creator'
 
     return jsonify(num)
 
 
+
 @parties_routes.route('/join_game', methods=['POST'])
 def join_game():
-    """Permet à un joueur de rejoindre une partie."""
     data = request.get_json()
     game_code = data.get('game_code')
 
-    # Vérifier si le code existe dans la base de données
+    # Vérifier si le code de jeu existe
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
         return jsonify({'error': 'Code de partie invalide.'}), 404
 
+    # Mettre à jour la partie avec le deuxième joueur
+    db.execute("UPDATE games SET player2_id = ? WHERE gameCode = ?", session.sid, game_code)
+
     # Associer le joueur à la session
     session['game_code'] = game_code
+    session['player_role'] = 'joiner'
 
-    # Rediriger vers la page de la partie
-    return redirect(url_for('parties.partie', game_code=game_code))
+    # Renvoyer l'URL à utiliser pour la redirection
+    return jsonify({'redirect': url_for('parties.partie', game_code=game_code)})
 
-@parties_routes.route('/game/<game_code>', methods=['GET'])
+
+@parties_routes.route('/launch_game', methods=['POST'])
+def launch_game():
+    game_code = session.get('game_code')
+    if not game_code:
+        return jsonify({'error': 'Aucune partie en cours.'}), 403
+
+    # Mettre à jour l'état de la partie dans la base de données
+    db.execute("UPDATE games SET state = 'started' WHERE gameCode = ?", game_code)
+
+    # Retourner une réponse pour informer que la partie a démarré
+    return jsonify({'message': 'La partie a commencé.'})
+
+
+
+
+@parties_routes.route('/game/<game_code>', methods=['GET', 'POST'])
 def partie(game_code):
     """Affiche la page de la partie."""
     # Vérifier si le jeu existe
@@ -96,5 +115,6 @@ def end_game():
     # Supprimer la partie de la base de données
     db.execute("DELETE FROM games WHERE gameCode = ?", game_code)
     session.pop('game_code', None)
+    session.pop('player_role', None)
 
     return jsonify({'message': 'Partie terminée avec succès.'}), 200

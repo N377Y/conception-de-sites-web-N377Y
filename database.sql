@@ -11,5 +11,7 @@ CREATE TABLE users (
 CREATE TABLE games (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     gameCode TEXT NOT NULL,
-    state TEXT DEFAULT 'waiting'
-    );
+    player1_id TEXT,
+    player2_id TEXT,
+    state TEXT NOT NULL  -- waiting, ready, started, ended
+);

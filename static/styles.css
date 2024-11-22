@@ -164,7 +164,6 @@ footer {
     text-align: center;
     padding: 10px 0;
     margin-top: 50px;
-    top: 100%;
     width: 100%;
 }
 
@@ -172,7 +171,7 @@ footer p {
     margin: 0;
 }
 
-#ball {
+#launcher {
     position: absolute;
     top: 40%;
     text-align: center;
@@ -184,6 +183,10 @@ footer p {
     margin-bottom: 3mm;
     background-color: #1b5e20;
     width: 80mm;
+}
+
+#startGameButton {
+    margin-top: 5mm;
 }
 
 #door {
@@ -218,4 +221,41 @@ footer p {
     border-color: #007BFF;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 40px;
+}
+
+.player {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 200px;
+}
+
+.player h2 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.score {
+    font-size: 3em;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.reset {
+    margin-top: 20mm;
+    display: flex;
+    justify-content: center;
 }

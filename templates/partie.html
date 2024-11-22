@@ -1,76 +1,5 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compteur de Score</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        h1 {
-            margin-top: 20px;
-            font-size: 2em;
-        }
-
-        .scoreboard {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin-top: 40px;
-        }
-
-        .player {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 200px;
-        }
-
-        .player h2 {
-            font-size: 1.5em;
-            margin: 0;
-        }
-
-        .score {
-            font-size: 3em;
-            margin: 20px 0;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        button.reset {
-            background-color: #FF0000;
-        }
-
-        button.reset:hover {
-            background-color: #b30000;
-        }
-    </style>
+{% extends "layout.html" %}
+{% block body %}
 </head>
 <body>
     <h1>Compteur de Score</h1>
@@ -97,14 +26,22 @@
     </div>
 
     <!-- Bouton de réinitialisation -->
-    <div style="margin-top: 30px;">
-        <button class="reset" onclick="resetScores()">Réinitialiser</button>
+    <div class="reset">
+        <button onclick="resetScores()">Réinitialiser</button>
+    </div>
+
+    <!-- Bouton pour revenir à la page d'accueil -->
+    <div class="back-home">
+        <button onclick="goHome()">End Game</button>
     </div>
 
     <script>
         // Variables pour stocker les scores des joueurs
         let score1 = 0;
         let score2 = 0;
+
+        const gameCode = "{{ game_code }}";
+        console.log("Code de la partie:", gameCode);
 
         // Fonction pour incrémenter le score d'un joueur
         function incrementScore(player) {
@@ -135,6 +72,17 @@
             document.getElementById('score1').textContent = score1;
             document.getElementById('score2').textContent = score2;
         }
+
+        // Fonction pour rediriger vers la page d'accueil
+        function goHome() {
+            fetch('/join_game', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ game_code: code })
+                        })
+        }
     </script>
 </body>
-</html>
+{% endblock %}

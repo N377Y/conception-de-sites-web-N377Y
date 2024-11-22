@@ -38,9 +38,12 @@
         <a href="/logout">Log out</a>
     </div>
 
-    <div id="ball" hidden>
-        <button id="closeButton1">Close</button>
-       <h1>Game Code</h1> 
+    <div id="launcher" hidden>
+        <div id="ball" >
+            <button id="closeButton1">Close</button>
+            <h1>Game Code</h1> 
+        </div>
+       <button id="startGameButton" onclick="launchGame()" disabled>Lancer la Partie</button>
     </div>
     <div id="door" hidden >
         <button id="closeButton2">Close</button>
@@ -66,7 +69,8 @@
 
         // Get the element to display the result
         const codebox = document.getElementById('ball');
-        codebox.removeAttribute('hidden');
+        const launcher = document.getElementById('launcher');
+        launcher.removeAttribute('hidden');
         const principal = document.getElementById('acceuil');
         principal.style.filter = 'blur(5px)';;
 
@@ -102,6 +106,7 @@
                 boxElement.style.fontSize = '16px';
                 bigBox.append(boxElement);
         });
+
         // Append the box to the codebox container
         codebox.appendChild(bigBox);
 
@@ -119,10 +124,11 @@
     // Close button logic
     document.getElementById('closeButton1').onclick = function () {
             const codebox = document.getElementById('ball');
+            const launcher = document.getElementById('launcher');
             const principal = document.getElementById('acceuil');
             const code = document.getElementById('code')
             // Reset the codebox to its initial state
-            codebox.setAttribute('hidden', 'true'); 
+            launcher.setAttribute('hidden', 'true'); 
             // Hide the codebox by removing it from the DOM
             code.remove();
             principal.style.filter = 'blur(0px)';
@@ -169,13 +175,25 @@
                 console.log("Code soumis :", code);
                 // Envoyer au backend (Exemple avec fetch)
 
+                        // Appel AJAX pour rejoindre une partie
                         fetch('/join_game', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
                             body: JSON.stringify({ game_code: code })
                         })
                         .then(response => response.json())
-                        .then(data => alert(data.message || data.error));
+                        .then(data => {
+                            if (data.redirect) {
+                                // Rediriger vers l'URL reçue
+                                window.location.href = data.redirect;
+                            } else if (data.error) {
+                                // Gérer l'erreur (ex: code de partie invalide)
+                                alert(data.error);
+                            }
+                        })
+                        .catch(error => console.error('Erreur:', error));
                     }
 
                 
@@ -190,6 +208,42 @@
 
 
         };
+        function launchGame() {
+            fetch('/launch_game', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    console.log(data.message);
+                    // Rediriger les deux joueurs vers la page de la partie
+                    checkGameStatus();
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+        }
+        function checkGameStatus() {
+                fetch('/game_state', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.state === 'started') {
+                        // Rediriger vers la page de la partie si le jeu a commencé
+                        window.location.href = `/game/${data.game_code}`;
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+            }
+
+            // Appeler la fonction checkGameStatus toutes les 3 secondes
+            setInterval(checkGameStatus, 3000);
 
 </script>
 
