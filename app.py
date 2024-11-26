@@ -15,9 +15,14 @@ app.register_blueprint(parties_routes)  # Register the blueprint
 app.secret_key = "myKey"
 CORS(app)
 # Configure session
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 Session(app)
+
 
 # Create the SQLite database if it doesn't exist
 if not os.path.exists("database.db"):
@@ -89,12 +94,17 @@ def login():
         if not bcrypt.checkpw(raw_pwd.encode('utf-8'), user["password"].encode('utf-8')):
             flash("Invalid username or password.", "error")
             return redirect(url_for("login"))
+        
+            # Clear any existing game session data
+        session.pop('game_code', None)
+        session.pop('player_role', None)
 
         # Stocke les informations utilisateur dans la session
         session["user_id"] = user["id"]
         session["username"] = user["username"]
 
         # Redirige vers le profil de l'utilisateur
+        print(f"Session after login: {session}")
         return redirect(url_for("user_profile", user_id = user["id"]))
 
     return render_template("login.html")
@@ -108,6 +118,7 @@ def logout():
     return redirect("/")
 
 @app.route("/profile", methods=["GET", "POST"])
+@login_required
 def profile():
     user_id = session["user_id"]
     file = request.files["file"]

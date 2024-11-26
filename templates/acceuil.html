@@ -4,9 +4,12 @@
     <div id="acceuil">
         <!-- Navigation -->
         <nav>
-            <a href="#features">Features</a>
-            <a href="#about">About Us</a>
-            <a href="#contact">Contact</a>
+            <div class="about">
+                <a href="#features">Features</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <img id="view_profile" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAvpJREFUaEPtmVtO4zAUhu28NFnFDCuhrGTKSmBWArMSykomswqnL/HwVyfIpHbOxQmoEpUqcXHd8/k/V8e7K3/5K7fffQN8tYKrKRBC+OmcOzRN8yPGiJ+nd0+Qvfe+H8fx1Tl37Lpu+nvVGVQDhBAevfe3b0btlZb0McY/Xdc9Kj/3YbkZgAx/qPnySZkaEDVACGHvvX8iF1nB/vctoMid1rVUACGEAxm/puHpXmq3EgOs6DIsfIzxtzQ2RACfafxEJ4VgAcjnX9hj22CBBGIR4CuNTzLUfdd1x9L5LAIMw4CT1+b3tbXo27a9UQPUZBxIT9X2SBUaVRnp11Q3YoxQ4TkHUVRgGIa/hlyPNFiUHDBvVRuqAkjzKqqQBbCePhWior/CYoLA4ahepYDOAlh833v/vNvt7iVWnU6npxjjQbI2WXNs2/Zu/pkSQFRu7pb8dL6XNbvlFL4AqHCfG2kfs6YbXQAY5YUCYgAoMgyDWuWcm14AWPwfBkkCeHIlq8pIzfM4yAFY0qf7hCAG/0U6zQGopZWWfUqjKGjW3mpTgPMJLQ0lFLwYhsztSdu2Hw59tRhIUuV5KFmzlUj3nvdFWwBoS4hmPR/E1jSqscK6VpRGK1Kc1S7x53LVPleJ0TGqmy0KYPg+Lqym99w4BC/2/2XoSLPFco1mDkGLITzbr5eOV3s9U6ozVe20pnjlQKbrSMmgU2oWSwCSwSPb3oodmhYCommaB669nuf/6XuKExkTzItzqgViaVIzjZSCqmm6CszMBlB7qTrbhnrqW7iMtDgDc0pIZmSuy5VcbLH3oQjmcRxxVb44DyfttMjvOeOxHwtASuAZgORK5L0PwucARJkGv05XK6IaILmV0wCcn74IITjPYf8vNV4MkEgvVYI1srRAczmgBkgC23I5xUGZEoIoBnKpj1xK5M+M5eqHGul+JoA0m9CdJ0C0U1aV4Wwl5vQuqLJvmuaWHrNiCaDmj1n/SZ++SGyoUkDyBVuv+QbY+oS5/a9egf9bl+BAPNKx6AAAAABJRU5ErkJggg=="/>
         </nav>
 
         <!-- Hero Section -->
@@ -35,18 +38,45 @@
                 <p>Our dedicated team is always available to assist you with any queries or issues.</p>
             </div>
         </section>
+    </div>
+    <div id="user_info" hidden>
+        <img id="closeButton3" class="closeButton" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArZJREFUaEPtmWFOHDEMhc1Pn6JwEspJWk5Ce5LSk5SblJ7CP4E3mqwymzjxS6azIBFpxQolG3/2c+zMXMkHH1cf3H75BLh0BHeLgJldi8h3EfkiIviePs8rJP7i809EnlT1aQ/4KYDM6G+rwYxNgPn9tu5RVRMks36ZOwxgZj9E5IHesVywgKgqfo8eNICZfRWRP/RO/QVDIBTAjl5v4fxkohEGMDN4Hd4/YiAv7iMbhQAONj7ZHYLoAhwkG8/ZXTk1Af5jwkbUkebcq+qjt6AH8HfgfGeMi8x9VtUbGuDC0jm3180HNwJm9hJxTzYHYUYrERk489FqRAfm39UqdhXAzH4RxsAIHHnobQDQq87og+4GIlxNaA+A0f4pybLeyINYjE9uJyGqueABROWzMQiGNSCKuet8xlmQ0aaLLQDMDDKAhKKjSLAKhGc8W90LGdUAWP0DtAVxm8smkw9rPJYWjqgBjPywC1E7OSZakxAAo8nweT3p+bS8SORaBKIJ7OWIW3QmPH8ogJew6c7cqxPNw0NVN06vRWBGQlXjM/nMQoQkNJrETeN3gggl8cgx2jrn4bXN7SpQscP5tUchixSpSLGLFM7iblADgE6RB5FR7U+c08aDgGSjnenNeV3xeiEmDzblvXNUbiDIrrcaaQ+AfWi1QATP+QWCNL5a6fFPD4CR0anIEFJgLzTYo5CPC7C2uWxXGsmZ0Tnu04nWlRJRYBJs1LjuuvPqmy/oPZV4D1EoLjFhgFVKbEJ3PUpMmHuwlZX/S0CEWpPuo8U1CrNNGOH0ZWrI+OYpVNuRfIrAGp3md2VD5cC5FeulHz19tPxHQVAb0OtQ785CEqpA7CmpoTczyaYhgCy5E8jtwMuPKcN3Acgjs/b4eIMDmN5r1qk3k1M5EBX0UfOmJHSUka19PgEuHYVXD5BcQJ/ljfEAAAAASUVORK5CYII="/>
+        <h1>Welcome, {{ user['username'] }}</h1>
+        {% if user['profile_picture'] %}
+            <img src="/static/{{  user['profile_picture'] }}" alt="Profile Picture" style="width:50px;height:50px;" class="profile">
+            <form action="/profile" method="post" enctype="multipart/form-data">
+                <button id="change" type="button">Change profile Picture</button>
+                <div class="pp" id="pro_pic" hidden>
+                    <br>
+                    <label for="profile_picture">Profile Picture:</label>
+                    <input type="file" id="profile_picture" name="file" accept="image/*">
+                    <button type="submit" id="save">Save</button>
+                    <br>
+                </div>
+            </form>
+        {% else %}
+            <form action="/profile" method="post" enctype="multipart/form-data">
+                <p>No profile picture uploaded.</p>
+                <div class="pp">
+                    <br>
+                    <label for="profile_picture">Profile Picture:</label>
+                    <input type="file" id="profile_picture" name="file" accept="image/*">
+                    <button type="submit">Save</button>
+                    <br>
+                </div>
+            </form>
+        {% endif %}
         <a href="/logout">Log out</a>
     </div>
-
     <div id="launcher" hidden>
         <div id="ball" >
-            <button id="closeButton1">Close</button>
-            <h1>Game Code</h1> 
+            <img id="closeButton1" class="closeButton"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArZJREFUaEPtmWFOHDEMhc1Pn6JwEspJWk5Ce5LSk5SblJ7CP4E3mqwymzjxS6azIBFpxQolG3/2c+zMXMkHH1cf3H75BLh0BHeLgJldi8h3EfkiIviePs8rJP7i809EnlT1aQ/4KYDM6G+rwYxNgPn9tu5RVRMks36ZOwxgZj9E5IHesVywgKgqfo8eNICZfRWRP/RO/QVDIBTAjl5v4fxkohEGMDN4Hd4/YiAv7iMbhQAONj7ZHYLoAhwkG8/ZXTk1Af5jwkbUkebcq+qjt6AH8HfgfGeMi8x9VtUbGuDC0jm3180HNwJm9hJxTzYHYUYrERk489FqRAfm39UqdhXAzH4RxsAIHHnobQDQq87og+4GIlxNaA+A0f4pybLeyINYjE9uJyGqueABROWzMQiGNSCKuet8xlmQ0aaLLQDMDDKAhKKjSLAKhGc8W90LGdUAWP0DtAVxm8smkw9rPJYWjqgBjPywC1E7OSZakxAAo8nweT3p+bS8SORaBKIJ7OWIW3QmPH8ogJew6c7cqxPNw0NVN06vRWBGQlXjM/nMQoQkNJrETeN3gggl8cgx2jrn4bXN7SpQscP5tUchixSpSLGLFM7iblADgE6RB5FR7U+c08aDgGSjnenNeV3xeiEmDzblvXNUbiDIrrcaaQ+AfWi1QATP+QWCNL5a6fFPD4CR0anIEFJgLzTYo5CPC7C2uWxXGsmZ0Tnu04nWlRJRYBJs1LjuuvPqmy/oPZV4D1EoLjFhgFVKbEJ3PUpMmHuwlZX/S0CEWpPuo8U1CrNNGOH0ZWrI+OYpVNuRfIrAGp3md2VD5cC5FeulHz19tPxHQVAb0OtQ785CEqpA7CmpoTczyaYhgCy5E8jtwMuPKcN3Acgjs/b4eIMDmN5r1qk3k1M5EBX0UfOmJHSUka19PgEuHYVXD5BcQJ/ljfEAAAAASUVORK5CYII="/>
+           <h1>Game Code</h1> 
         </div>
-       <button id="startGameButton" onclick="launchGame()" disabled>Lancer la Partie</button>
+       <button id="startGameButton" onclick="launchGame()" >Launch Game</button>
     </div>
     <div id="door" hidden >
-        <button id="closeButton2">Close</button>
+        <img id="closeButton2" class="closeButton" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArZJREFUaEPtmWFOHDEMhc1Pn6JwEspJWk5Ce5LSk5SblJ7CP4E3mqwymzjxS6azIBFpxQolG3/2c+zMXMkHH1cf3H75BLh0BHeLgJldi8h3EfkiIviePs8rJP7i809EnlT1aQ/4KYDM6G+rwYxNgPn9tu5RVRMks36ZOwxgZj9E5IHesVywgKgqfo8eNICZfRWRP/RO/QVDIBTAjl5v4fxkohEGMDN4Hd4/YiAv7iMbhQAONj7ZHYLoAhwkG8/ZXTk1Af5jwkbUkebcq+qjt6AH8HfgfGeMi8x9VtUbGuDC0jm3180HNwJm9hJxTzYHYUYrERk489FqRAfm39UqdhXAzH4RxsAIHHnobQDQq87og+4GIlxNaA+A0f4pybLeyINYjE9uJyGqueABROWzMQiGNSCKuet8xlmQ0aaLLQDMDDKAhKKjSLAKhGc8W90LGdUAWP0DtAVxm8smkw9rPJYWjqgBjPywC1E7OSZakxAAo8nweT3p+bS8SORaBKIJ7OWIW3QmPH8ogJew6c7cqxPNw0NVN06vRWBGQlXjM/nMQoQkNJrETeN3gggl8cgx2jrn4bXN7SpQscP5tUchixSpSLGLFM7iblADgE6RB5FR7U+c08aDgGSjnenNeV3xeiEmDzblvXNUbiDIrrcaaQ+AfWi1QATP+QWCNL5a6fFPD4CR0anIEFJgLzTYo5CPC7C2uWxXGsmZ0Tnu04nWlRJRYBJs1LjuuvPqmy/oPZV4D1EoLjFhgFVKbEJ3PUpMmHuwlZX/S0CEWpPuo8U1CrNNGOH0ZWrI+OYpVNuRfIrAGp3md2VD5cC5FeulHz19tPxHQVAb0OtQ785CEqpA7CmpoTczyaYhgCy5E8jtwMuPKcN3Acgjs/b4eIMDmN5r1qk3k1M5EBX0UfOmJHSUka19PgEuHYVXD5BcQJ/ljfEAAAAASUVORK5CYII="/>
         <h1>Enter Code</h1>
         <form id="code-form">
             <div class="code-container">
@@ -135,6 +165,22 @@
 
 
         };
+
+        document.getElementById('view_profile').onclick = function () {
+            const user = document.getElementById('user_info');
+            user.removeAttribute('hidden');
+            const principal = document.getElementById('acceuil');
+            principal.style.filter = 'blur(5px)';;
+        };
+
+        document.getElementById('change').onclick = function () {
+            const change = document.getElementById('pro_pic');
+            change.removeAttribute('hidden');
+        };
+        document.getElementById('save').onclick = function () {
+            const change = document.getElementById('pro_pic');
+            change.setAttribute('hidden');
+        };
         
     document.getElementById('join').onclick = async function (e) {
         e.preventDefault();
@@ -143,7 +189,7 @@
         const codebox = document.getElementById('door');
         codebox.removeAttribute('hidden');
         const principal = document.getElementById('acceuil');
-        principal.style.filter = 'blur(5px)';;
+        principal.style.filter = 'blur(5px)';
     };
     const inputs = document.querySelectorAll(".code-container input");
 
@@ -206,8 +252,17 @@
             codebox.setAttribute('hidden', 'true'); 
             principal.style.filter = 'blur(0px)';
 
-
         };
+
+        document.getElementById('closeButton3').onclick = function () {
+            const user = document.getElementById('user_info');
+            // Reset the codebox to its initial state
+            user.setAttribute('hidden', 'true'); 
+            const principal = document.getElementById('acceuil');
+            principal.style.filter = 'blur(0px)';
+        };
+
+
         function launchGame() {
             fetch('/launch_game', {
                 method: 'POST',
@@ -217,33 +272,41 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.message) {
-                    console.log(data.message);
-                    // Rediriger les deux joueurs vers la page de la partie
-                    checkGameStatus();
+                if (data.redirect) {
+                    // Rediriger vers l'URL reçue
+                    window.location.href = data.redirect;
+                } else if (data.error) {
+                    // Gérer l'erreur (ex: code de partie invalide)
+                    alert(data.error);
+                }
+                })
+            .catch(error => console.error('Erreur:', error));
+        }
+        function checkGameStatus(gameCode) {
+            fetch(`/game_state?game_code=${gameCode}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.state === 'ready' || data.state === 'started') {
+                    // Rediriger vers la page de la partie
+                    window.location.href = `/game/${data.game_code}`;
+                } else {
+                    console.log('En attente du lancement de la partie...');
                 }
             })
             .catch(error => console.error('Erreur:', error));
         }
-        function checkGameStatus() {
-                fetch('/game_state', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.state === 'started') {
-                        // Rediriger vers la page de la partie si le jeu a commencé
-                        window.location.href = `/game/${data.game_code}`;
-                    }
-                })
-                .catch(error => console.error('Erreur:', error));
-            }
 
-            // Appeler la fonction checkGameStatus toutes les 3 secondes
-            setInterval(checkGameStatus, 3000);
+
+// Appeler la fonction checkGameStatus toutes les 3 secondes tant que le jeu n'est pas lancé
+        setInterval(() => {
+            const gameCode = "{{ game_code }}";  // Assurez-vous que cette variable est définie dans votre modèle
+            checkGameStatus(gameCode);
+        }, 3000);
 
 </script>
 

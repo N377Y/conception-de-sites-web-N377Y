@@ -6,7 +6,7 @@
     <div class="scoreboard">
         <!-- Joueur 1 -->
         <div class="player" id="player1">
-            <h2>Joueur 1</h2>
+            <h2>{{ player1_username }}</h2>
             <div class="score" id="score1">0</div>
             <div class="controls">
                 <button onclick="incrementScore(1)">+1</button>
@@ -16,7 +16,7 @@
 
         <!-- Joueur 2 -->
         <div class="player" id="player2">
-            <h2>Joueur 2</h2>
+            <h2>{{ player2_username }}</h2>
             <div class="score" id="score2">0</div>
             <div class="controls">
                 <button onclick="incrementScore(2)">+1</button>
@@ -32,38 +32,68 @@
 
     <!-- Bouton pour revenir à la page d'accueil -->
     <div class="back-home">
-        <button onclick="goHome()">End Game</button>
+        <button id="leaveGameButton" onclick="leaveGame()">End Game</button>
     </div>
 
     <script>
         // Variables pour stocker les scores des joueurs
         let score1 = 0;
         let score2 = 0;
+        const userId = "{{ user_id }}";
+
 
         const gameCode = "{{ game_code }}";
         console.log("Code de la partie:", gameCode);
 
         // Fonction pour incrémenter le score d'un joueur
         function incrementScore(player) {
-            if (player === 1) {
-                score1++;
-                document.getElementById('score1').textContent = score1;
-            } else if (player === 2) {
-                score2++;
-                document.getElementById('score2').textContent = score2;
-            }
+            fetch('/update_score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    'game_code': gameCode,
+                    'player': player,
+                    'action': 'increment'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    console.log(data.message);
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
-        // Fonction pour décrémenter le score d'un joueur
         function decrementScore(player) {
-            if (player === 1 && score1 > 0) {
-                score1--;
-                document.getElementById('score1').textContent = score1;
-            } else if (player === 2 && score2 > 0) {
-                score2--;
-                document.getElementById('score2').textContent = score2;
-            }
+            fetch('/update_score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    'game_code': gameCode,
+                    'player': player,
+                    'action': 'decrement'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    console.log(data.message);
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
+
 
         // Fonction pour réinitialiser les scores des joueurs
         function resetScores() {
@@ -73,16 +103,87 @@
             document.getElementById('score2').textContent = score2;
         }
 
-        // Fonction pour rediriger vers la page d'accueil
+                    // Fonction pour rediriger vers la page d'accueil
         function goHome() {
-            fetch('/join_game', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ game_code: code })
-                        })
+                        fetch('/join_game', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ game_code: code })
+                                    })
+                    }
+
+        function leaveGame() {
+                fetch('/end_game', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include' // Include cookies in the request
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.redirect) {
+                        console.log(data.message);
+                        // Redirect to the user's profile page with user_id
+                        window.location.href = data.redirect;
+                    } else if (data.error) {
+                        console.error('Error:', data.error);
+                        alert('Error: ' + data.error);
+                    } else if (data.message) {
+                        console.log(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        function checkGameStatus(gameCode) {
+            fetch(`/game_state?game_code=${gameCode}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include' // Include cookies in the request
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.state === 'ended') {
+                    //Rediriger vers la page de la partie
+                    window.location.href = '/user/'+userId;
+                } else {
+                    console.log('Partie en cours...');
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
         }
+        function fetchScores() {
+            fetch(`/get_scores?game_code=${gameCode}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error:', data.error);
+                    return;
+                }
+                // Update the scores on the page
+                document.getElementById('score1').textContent = data.score1;
+                document.getElementById('score2').textContent = data.score2;
+                // Update local score variables
+                score1 = data.score1;
+                score2 = data.score2;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+            setInterval(() => {
+                const gameCode = "{{ game_code }}";  // Assurez-vous que cette variable est définie dans votre modèle
+                checkGameStatus(gameCode);
+                fetchScores();
+            }, 3000);
     </script>
 </body>
 {% endblock %}

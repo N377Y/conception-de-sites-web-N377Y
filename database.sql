@@ -12,6 +12,12 @@ CREATE TABLE games (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     gameCode TEXT NOT NULL,
     player1_id TEXT,
+    player1_username TEXT,
     player2_id TEXT,
-    state TEXT NOT NULL  -- waiting, ready, started, ended
+    player2_username TEXT,
+    state TEXT NOT NULL,  -- waiting, started, ended
+    score1 INTEGER DEFAULT 0,
+    score2 INTEGER DEFAULT 0,
+    FOREIGN KEY (player1_id) REFERENCES users(id),
+    FOREIGN KEY (player2_id) REFERENCES users(id)
 );
