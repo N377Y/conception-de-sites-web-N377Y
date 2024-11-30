@@ -5,7 +5,9 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     mail TEXT NOT NULL,
     name TEXT NOT NULL,
-    profile_picture TEXT
+    profile_picture TEXT,
+    status TEXT DEFAULT private,
+    role TEXT DEFAULT 'user'
 );
 
 CREATE TABLE games (

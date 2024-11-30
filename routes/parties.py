@@ -146,6 +146,7 @@ def get_scores():
 def update_score():
     data = request.get_json()
     game_code = data.get('game_code')
+    userId = session.get('user_id')
     player = data.get('player')
     action = data.get('action')  # 'increment' or 'decrement'
 
@@ -153,7 +154,7 @@ def update_score():
         return jsonify({'error': 'Invalid data provided.'}), 400
 
     # Retrieve current scores
-    game = db.execute("SELECT score1, score2 FROM games WHERE gameCode = ?", game_code)
+    game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
         return jsonify({'error': 'Game not found.'}), 404
 
@@ -161,23 +162,26 @@ def update_score():
     score1 = game['score1']
     score2 = game['score2']
 
-    # Update the appropriate score
+        # Update the appropriate score
     if player == 1:
-        if action == 'increment':
-            score1 += 1
-        elif action == 'decrement' and score1 > 0:
-            score1 -= 1
+        if int(game['player1_id']) == userId:
+            if action == 'increment':
+                score1 += 1
+            elif action == 'decrement' and score1 > 0:
+                score1 -= 1
     elif player == 2:
-        if action == 'increment':
-            score2 += 1
-        elif action == 'decrement' and score2 > 0:
-            score2 -= 1
+        if int(game['player2_id']) == userId:
+            if action == 'increment':
+                score2 += 1
+            elif action == 'decrement' and score2 > 0:
+                score2 -= 1
 
-    # Update the scores in the database
+        # Update the scores in the database
     db.execute(
-        "UPDATE games SET score1 = ?, score2 = ? WHERE gameCode = ?",
-        score1, score2, game_code
-    )
+            "UPDATE games SET score1 = ?, score2 = ? WHERE gameCode = ?",
+            score1, score2, game_code
+        )
+    
 
     return jsonify({'message': 'Score updated successfully.'}), 200
 
@@ -205,7 +209,7 @@ def end_game():
     if not game_code:
         return jsonify({'error': 'Aucune partie en cours.'}), 403
 
-    # Supprimer la partie de la base de données
+    # Chqnger le statut la partie de la base de données
     db.execute("UPDATE games SET state = 'ended' WHERE gameCode = ?", game_code)
     session.pop('game_code', None)
     session.pop('player_role', None)

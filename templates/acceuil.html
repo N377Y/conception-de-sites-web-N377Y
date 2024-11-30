@@ -9,15 +9,19 @@
                 <a href="#about">About Us</a>
                 <a href="#contact">Contact</a>
             </div>
-            <img id="view_profile" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAvpJREFUaEPtmVtO4zAUhu28NFnFDCuhrGTKSmBWArMSykomswqnL/HwVyfIpHbOxQmoEpUqcXHd8/k/V8e7K3/5K7fffQN8tYKrKRBC+OmcOzRN8yPGiJ+nd0+Qvfe+H8fx1Tl37Lpu+nvVGVQDhBAevfe3b0btlZb0McY/Xdc9Kj/3YbkZgAx/qPnySZkaEDVACGHvvX8iF1nB/vctoMid1rVUACGEAxm/puHpXmq3EgOs6DIsfIzxtzQ2RACfafxEJ4VgAcjnX9hj22CBBGIR4CuNTzLUfdd1x9L5LAIMw4CT1+b3tbXo27a9UQPUZBxIT9X2SBUaVRnp11Q3YoxQ4TkHUVRgGIa/hlyPNFiUHDBvVRuqAkjzKqqQBbCePhWior/CYoLA4ahepYDOAlh833v/vNvt7iVWnU6npxjjQbI2WXNs2/Zu/pkSQFRu7pb8dL6XNbvlFL4AqHCfG2kfs6YbXQAY5YUCYgAoMgyDWuWcm14AWPwfBkkCeHIlq8pIzfM4yAFY0qf7hCAG/0U6zQGopZWWfUqjKGjW3mpTgPMJLQ0lFLwYhsztSdu2Hw59tRhIUuV5KFmzlUj3nvdFWwBoS4hmPR/E1jSqscK6VpRGK1Kc1S7x53LVPleJ0TGqmy0KYPg+Lqym99w4BC/2/2XoSLPFco1mDkGLITzbr5eOV3s9U6ozVe20pnjlQKbrSMmgU2oWSwCSwSPb3oodmhYCommaB669nuf/6XuKExkTzItzqgViaVIzjZSCqmm6CszMBlB7qTrbhnrqW7iMtDgDc0pIZmSuy5VcbLH3oQjmcRxxVb44DyfttMjvOeOxHwtASuAZgORK5L0PwucARJkGv05XK6IaILmV0wCcn74IITjPYf8vNV4MkEgvVYI1srRAczmgBkgC23I5xUGZEoIoBnKpj1xK5M+M5eqHGul+JoA0m9CdJ0C0U1aV4Wwl5vQuqLJvmuaWHrNiCaDmj1n/SZ++SGyoUkDyBVuv+QbY+oS5/a9egf9bl+BAPNKx6AAAAABJRU5ErkJggg=="/>
+            {% if user['profile_picture'] %}
+                <img id="view_profile" src="/static/{{  user['profile_picture'] }}" alt="Profile Picture" style="width:50px;height:50px;" class="profile">
+            {% else %}
+                <img id="view_profile" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAvpJREFUaEPtmVtO4zAUhu28NFnFDCuhrGTKSmBWArMSykomswqnL/HwVyfIpHbOxQmoEpUqcXHd8/k/V8e7K3/5K7fffQN8tYKrKRBC+OmcOzRN8yPGiJ+nd0+Qvfe+H8fx1Tl37Lpu+nvVGVQDhBAevfe3b0btlZb0McY/Xdc9Kj/3YbkZgAx/qPnySZkaEDVACGHvvX8iF1nB/vctoMid1rVUACGEAxm/puHpXmq3EgOs6DIsfIzxtzQ2RACfafxEJ4VgAcjnX9hj22CBBGIR4CuNTzLUfdd1x9L5LAIMw4CT1+b3tbXo27a9UQPUZBxIT9X2SBUaVRnp11Q3YoxQ4TkHUVRgGIa/hlyPNFiUHDBvVRuqAkjzKqqQBbCePhWior/CYoLA4ahepYDOAlh833v/vNvt7iVWnU6npxjjQbI2WXNs2/Zu/pkSQFRu7pb8dL6XNbvlFL4AqHCfG2kfs6YbXQAY5YUCYgAoMgyDWuWcm14AWPwfBkkCeHIlq8pIzfM4yAFY0qf7hCAG/0U6zQGopZWWfUqjKGjW3mpTgPMJLQ0lFLwYhsztSdu2Hw59tRhIUuV5KFmzlUj3nvdFWwBoS4hmPR/E1jSqscK6VpRGK1Kc1S7x53LVPleJ0TGqmy0KYPg+Lqym99w4BC/2/2XoSLPFco1mDkGLITzbr5eOV3s9U6ozVe20pnjlQKbrSMmgU2oWSwCSwSPb3oodmhYCommaB669nuf/6XuKExkTzItzqgViaVIzjZSCqmm6CszMBlB7qTrbhnrqW7iMtDgDc0pIZmSuy5VcbLH3oQjmcRxxVb44DyfttMjvOeOxHwtASuAZgORK5L0PwucARJkGv05XK6IaILmV0wCcn74IITjPYf8vNV4MkEgvVYI1srRAczmgBkgC23I5xUGZEoIoBnKpj1xK5M+M5eqHGul+JoA0m9CdJ0C0U1aV4Wwl5vQuqLJvmuaWHrNiCaDmj1n/SZ++SGyoUkDyBVuv+QbY+oS5/a9egf9bl+BAPNKx6AAAAABJRU5ErkJggg=="/>
+            {% endif %}
         </nav>
 
         <!-- Hero Section -->
         <div id="hero">
             <h1>Explore Endless Possibilities</h1>
             <p>Join our platform to access exclusive content and connect with a vibrant community.</p>
-            <button onclick="location.href='/start_game'" id="start">Start Game</button>
-            <button id="join">Join Game</button>
+            <button type="button" onclick="location.href='/start_game'" id="start">Start Game</button>
+            <button type="button" id="join">Join Game</button>
         </div>
 
         <!-- Features Section -->
@@ -38,36 +42,83 @@
                 <p>Our dedicated team is always available to assist you with any queries or issues.</p>
             </div>
         </section>
+        <div>
+            <button id="stats">See a player's stats</button>
+        </div>
+        <div id="view_stats" hidden>
+            <div><img id="closeButton4" class="closeButton" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArZJREFUaEPtmWFOHDEMhc1Pn6JwEspJWk5Ce5LSk5SblJ7CP4E3mqwymzjxS6azIBFpxQolG3/2c+zMXMkHH1cf3H75BLh0BHeLgJldi8h3EfkiIviePs8rJP7i809EnlT1aQ/4KYDM6G+rwYxNgPn9tu5RVRMks36ZOwxgZj9E5IHesVywgKgqfo8eNICZfRWRP/RO/QVDIBTAjl5v4fxkohEGMDN4Hd4/YiAv7iMbhQAONj7ZHYLoAhwkG8/ZXTk1Af5jwkbUkebcq+qjt6AH8HfgfGeMi8x9VtUbGuDC0jm3180HNwJm9hJxTzYHYUYrERk489FqRAfm39UqdhXAzH4RxsAIHHnobQDQq87og+4GIlxNaA+A0f4pybLeyINYjE9uJyGqueABROWzMQiGNSCKuet8xlmQ0aaLLQDMDDKAhKKjSLAKhGc8W90LGdUAWP0DtAVxm8smkw9rPJYWjqgBjPywC1E7OSZakxAAo8nweT3p+bS8SORaBKIJ7OWIW3QmPH8ogJew6c7cqxPNw0NVN06vRWBGQlXjM/nMQoQkNJrETeN3gggl8cgx2jrn4bXN7SpQscP5tUchixSpSLGLFM7iblADgE6RB5FR7U+c08aDgGSjnenNeV3xeiEmDzblvXNUbiDIrrcaaQ+AfWi1QATP+QWCNL5a6fFPD4CR0anIEFJgLzTYo5CPC7C2uWxXGsmZ0Tnu04nWlRJRYBJs1LjuuvPqmy/oPZV4D1EoLjFhgFVKbEJ3PUpMmHuwlZX/S0CEWpPuo8U1CrNNGOH0ZWrI+OYpVNuRfIrAGp3md2VD5cC5FeulHz19tPxHQVAb0OtQ785CEqpA7CmpoTczyaYhgCy5E8jtwMuPKcN3Acgjs/b4eIMDmN5r1qk3k1M5EBX0UfOmJHSUka19PgEuHYVXD5BcQJ/ljfEAAAAASUVORK5CYII="/>
+            </div>
+            <label for="users">Choose a user:</label>
+            <select name="users" id="choose_user">
+                <option value="" selected disabled>-- Choose a user --</option>
+                {% for user in users %}
+                    {% if user.username != session.get('username') and user.role != "admin" %}
+                        <option value="{{ user.username }}">{{ user.username }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>            
+            <div id="stats_container">
+                
+            </div> 
+        </div>
+        <table id="myStats">
+            <thead>
+                <tr>
+                    <th>Players</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody >
+                {% for game in games %}
+                    <tr>
+                        
+                        <td>{{ game.player1_username }} - {{ game.player2_username }}</td>
+                        <td>{{ game.score1 }}-{{ game.score2}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div id="user_info" hidden>
-        <img id="closeButton3" class="closeButton" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArZJREFUaEPtmWFOHDEMhc1Pn6JwEspJWk5Ce5LSk5SblJ7CP4E3mqwymzjxS6azIBFpxQolG3/2c+zMXMkHH1cf3H75BLh0BHeLgJldi8h3EfkiIviePs8rJP7i809EnlT1aQ/4KYDM6G+rwYxNgPn9tu5RVRMks36ZOwxgZj9E5IHesVywgKgqfo8eNICZfRWRP/RO/QVDIBTAjl5v4fxkohEGMDN4Hd4/YiAv7iMbhQAONj7ZHYLoAhwkG8/ZXTk1Af5jwkbUkebcq+qjt6AH8HfgfGeMi8x9VtUbGuDC0jm3180HNwJm9hJxTzYHYUYrERk489FqRAfm39UqdhXAzH4RxsAIHHnobQDQq87og+4GIlxNaA+A0f4pybLeyINYjE9uJyGqueABROWzMQiGNSCKuet8xlmQ0aaLLQDMDDKAhKKjSLAKhGc8W90LGdUAWP0DtAVxm8smkw9rPJYWjqgBjPywC1E7OSZakxAAo8nweT3p+bS8SORaBKIJ7OWIW3QmPH8ogJew6c7cqxPNw0NVN06vRWBGQlXjM/nMQoQkNJrETeN3gggl8cgx2jrn4bXN7SpQscP5tUchixSpSLGLFM7iblADgE6RB5FR7U+c08aDgGSjnenNeV3xeiEmDzblvXNUbiDIrrcaaQ+AfWi1QATP+QWCNL5a6fFPD4CR0anIEFJgLzTYo5CPC7C2uWxXGsmZ0Tnu04nWlRJRYBJs1LjuuvPqmy/oPZV4D1EoLjFhgFVKbEJ3PUpMmHuwlZX/S0CEWpPuo8U1CrNNGOH0ZWrI+OYpVNuRfIrAGp3md2VD5cC5FeulHz19tPxHQVAb0OtQ785CEqpA7CmpoTczyaYhgCy5E8jtwMuPKcN3Acgjs/b4eIMDmN5r1qk3k1M5EBX0UfOmJHSUka19PgEuHYVXD5BcQJ/ljfEAAAAASUVORK5CYII="/>
+        <img id="closeButton3" class="closeButton" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArZJREFUaEPtmWFOHDEMhc1Pn6JwEspJWk5Ce5LSk5SblJ7CP4E3mqwymzjxS6azIBFpxQolG3/2c+zMXMkHH1cf3H75BLh0BHeLgJldi8h3EfkiIviePs8rJP7i809EnlT1aQ/4KYDM6G+rwYxNgPn9tu5RVRMks36ZOwxgZj9E5IHesVywgKgqfo8eNICZfRWRP/RO/QVDIBTAjl5v4fxkohEGMDN4Hd4/YiAv7iMbhQAONj7ZHYLoAhwkG8/ZXTk1Af5jwkbUkebcq+qjt6AH8HfgfGeMi8x9VtUbGuDC0jm3180HNwJm9hJxTzYHYUYrERk489FqRAfm39UqdhXAzH4RxsAIHHnobQDQq87og+4GIlxNaA+A0f4pybLeyINYjE9uJyGqueABROWzMQiGNSCKuet8xlmQ0aaLLQDMDDKAhKKjSLAKhGc8W90LGdUAWP0DtAVxm8smkw9rPJYWjqgBjPywC1E7OSZakxAAo8nweT3p+bS8SORaBKIJ7OWIW3QmPH8ogJew6c7cqxPNw0NVN06vRWBGQlXjM/nMQoQkNJrETeN3gggl8cgx2jrn4bXN7SpQscP5tUchixSpSLGLFM7iblADgE6RB5FR7U+c08aDgGSjnenNeV3xeiEmDzblvXNUbiDIrrcaaQ+AfWi1QATP+QWCNL5a6fFPD4CR0anIEFJgLzTYo5CPC7C2uWxXGsmZ0Tnu04nWlRJRYBJs1LjuuvPqmy/oPZV4D1EoLjFhgFVKbEJ3PUpMmHuwlZX/S0CEWpPuo8U1CrNNGOH0ZWrI+OYpVNuRfIrAGp3md2VD5cC5FeulHz19tPxHQVAb0OtQ785CEqpA7CmpoTczyaYhgCy5E8jtwMuPKcN3Acgjs/b4eIMDmN5r1qk3k1M5EBX0UfOmJHSUka19PgEuHYVXD5BcQJ/ljfEAAAAASUVORK5CYII=" />
         <h1>Welcome, {{ user['username'] }}</h1>
+            <!-- User Details -->    
+        <!-- Display Profile Picture -->
         {% if user['profile_picture'] %}
-            <img src="/static/{{  user['profile_picture'] }}" alt="Profile Picture" style="width:50px;height:50px;" class="profile">
-            <form action="/profile" method="post" enctype="multipart/form-data">
-                <button id="change" type="button">Change profile Picture</button>
-                <div class="pp" id="pro_pic" hidden>
-                    <br>
-                    <label for="profile_picture">Profile Picture:</label>
-                    <input type="file" id="profile_picture" name="file" accept="image/*">
-                    <button type="submit" id="save">Save</button>
-                    <br>
-                </div>
-            </form>
+            <img src="/static/{{ user['profile_picture'] }}" alt="Profile Picture" class="profile">
         {% else %}
-            <form action="/profile" method="post" enctype="multipart/form-data">
-                <p>No profile picture uploaded.</p>
-                <div class="pp">
-                    <br>
-                    <label for="profile_picture">Profile Picture:</label>
-                    <input type="file" id="profile_picture" name="file" accept="image/*">
-                    <button type="submit">Save</button>
-                    <br>
-                </div>
-            </form>
+            <p>No profile picture uploaded.</p>
         {% endif %}
-        <a href="/logout">Log out</a>
+        <p><strong>Full Name:</strong> {{ user['name'] }}</p>
+        <p><strong>Email:</strong> {{ user['mail'] }}</p>
+        <p><strong>Current Status:</strong> <span id="current-status">{{ user['status'] }}</span></p>
+    
+        <!-- Update Profile Picture -->
+        <form action="/profile" method="post" enctype="multipart/form-data">
+            <button id="change" type="button">Change Profile Picture</button>
+            <div class="pp" id="pro_pic" hidden>
+                <br>
+                <label for="profile_picture">Profile Picture:</label>
+                <input type="file" id="profile_picture" name="file" accept="image/*">
+                <button type="submit" id="save">Save</button>
+                <br>
+            </div>
+        </form>
+    
+    
+        <!-- Update Status -->
+        <label for="status-select">Change your status:</label>
+        <select id="status-select">
+            <option value="public" {% if user.status == 'public' %}selected{% endif %}>Public</option>
+            <option value="private" {% if user.status == 'private' %}selected{% endif %}>Private</option>
+        </select>
+        <button id="update-status-btn">Update Status</button>
+        <p id="status-message" style="color: green; margin-top: 10px;"></p>
+    
+        <!-- Logout -->
+        <a href="/logout" style="display: block; margin-top: 20px;">Log Out</a>
     </div>
+    
     <div id="launcher" hidden>
         <div id="ball" >
             <img id="closeButton1" class="closeButton"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAArZJREFUaEPtmWFOHDEMhc1Pn6JwEspJWk5Ce5LSk5SblJ7CP4E3mqwymzjxS6azIBFpxQolG3/2c+zMXMkHH1cf3H75BLh0BHeLgJldi8h3EfkiIviePs8rJP7i809EnlT1aQ/4KYDM6G+rwYxNgPn9tu5RVRMks36ZOwxgZj9E5IHesVywgKgqfo8eNICZfRWRP/RO/QVDIBTAjl5v4fxkohEGMDN4Hd4/YiAv7iMbhQAONj7ZHYLoAhwkG8/ZXTk1Af5jwkbUkebcq+qjt6AH8HfgfGeMi8x9VtUbGuDC0jm3180HNwJm9hJxTzYHYUYrERk489FqRAfm39UqdhXAzH4RxsAIHHnobQDQq87og+4GIlxNaA+A0f4pybLeyINYjE9uJyGqueABROWzMQiGNSCKuet8xlmQ0aaLLQDMDDKAhKKjSLAKhGc8W90LGdUAWP0DtAVxm8smkw9rPJYWjqgBjPywC1E7OSZakxAAo8nweT3p+bS8SORaBKIJ7OWIW3QmPH8ogJew6c7cqxPNw0NVN06vRWBGQlXjM/nMQoQkNJrETeN3gggl8cgx2jrn4bXN7SpQscP5tUchixSpSLGLFM7iblADgE6RB5FR7U+c08aDgGSjnenNeV3xeiEmDzblvXNUbiDIrrcaaQ+AfWi1QATP+QWCNL5a6fFPD4CR0anIEFJgLzTYo5CPC7C2uWxXGsmZ0Tnu04nWlRJRYBJs1LjuuvPqmy/oPZV4D1EoLjFhgFVKbEJ3PUpMmHuwlZX/S0CEWpPuo8U1CrNNGOH0ZWrI+OYpVNuRfIrAGp3md2VD5cC5FeulHz19tPxHQVAb0OtQ785CEqpA7CmpoTczyaYhgCy5E8jtwMuPKcN3Acgjs/b4eIMDmN5r1qk3k1M5EBX0UfOmJHSUka19PgEuHYVXD5BcQJ/ljfEAAAAASUVORK5CYII="/>
@@ -93,221 +144,9 @@
     </div>
 
 </body>
-<script>
-    document.getElementById('start').onclick = async function (e) {
-        e.preventDefault();
-
-        // Get the element to display the result
-        const codebox = document.getElementById('ball');
-        const launcher = document.getElementById('launcher');
-        launcher.removeAttribute('hidden');
-        const principal = document.getElementById('acceuil');
-        principal.style.filter = 'blur(5px)';;
-
-        try {
-            // Send the POST request to the server
-            const response = await fetch('/start_game', {
-                method: 'POST'
-            });
-
-            // Check if the response is OK
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            // Parse the JSON response
-            const code = await response.json();
-
-            // Create a new paragraph element to display the result
-
-            const bigBox = document.createElement('div');
-            bigBox.id = "code";
-            code.forEach((num) => {
-                // Create a new div element for each number
-                const boxElement = document.createElement('div');
-                boxElement.textContent = num; // Set the number as the content
-                boxElement.style.color = 'darkgreen';
-                boxElement.style.backgroundColor = 'white';
-                boxElement.style.border = '1px solid darkgreen';
-                boxElement.style.padding = '10px';
-                boxElement.style.margin = '5px';
-                boxElement.style.display = 'inline-block'; // Display elements side-by-side
-                boxElement.style.borderRadius = '5px';
-                boxElement.style.fontSize = '16px';
-                bigBox.append(boxElement);
-        });
-
-        // Append the box to the codebox container
-        codebox.appendChild(bigBox);
-
-        } catch (error) {
-            console.error('Error:', error);
-
-            // Create and append an error message
-            const errorMessage = document.createElement('p');
-            errorMessage.style.color = "red";
-            errorMessage.innerHTML = `<strong>Error:</strong> ${error.message}`;
-            codebox.appendChild(errorMessage);
-        }
-    };
-
-    // Close button logic
-    document.getElementById('closeButton1').onclick = function () {
-            const codebox = document.getElementById('ball');
-            const launcher = document.getElementById('launcher');
-            const principal = document.getElementById('acceuil');
-            const code = document.getElementById('code')
-            // Reset the codebox to its initial state
-            launcher.setAttribute('hidden', 'true'); 
-            // Hide the codebox by removing it from the DOM
-            code.remove();
-            principal.style.filter = 'blur(0px)';
-
-
-        };
-
-        document.getElementById('view_profile').onclick = function () {
-            const user = document.getElementById('user_info');
-            user.removeAttribute('hidden');
-            const principal = document.getElementById('acceuil');
-            principal.style.filter = 'blur(5px)';;
-        };
-
-        document.getElementById('change').onclick = function () {
-            const change = document.getElementById('pro_pic');
-            change.removeAttribute('hidden');
-        };
-        document.getElementById('save').onclick = function () {
-            const change = document.getElementById('pro_pic');
-            change.setAttribute('hidden');
-        };
-        
-    document.getElementById('join').onclick = async function (e) {
-        e.preventDefault();
-
-        // Get the element to display the result
-        const codebox = document.getElementById('door');
-        codebox.removeAttribute('hidden');
-        const principal = document.getElementById('acceuil');
-        principal.style.filter = 'blur(5px)';
-    };
-    const inputs = document.querySelectorAll(".code-container input");
-
-        // Permet de passer automatiquement au champ suivant
-        inputs.forEach((input, index) => {
-            input.addEventListener("input", (event) => {
-                const value = event.target.value;
-                if (value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-            });
-
-            // Permet de revenir au champ précédent si on efface
-            input.addEventListener("keydown", (event) => {
-                if (event.key === "Backspace" && index > 0 && !input.value) {
-                    inputs[index - 1].focus();
-                }
-            });
-        });
-
-        // Gestion du formulaire
-        document.getElementById('validate').onclick = async function (e) {
-            event.preventDefault();
-
-            // Récupérer les valeurs des cases
-            const code = Array.from(inputs).map(input => input.value).join("");
-
-            if (code.length === 6) {
-                console.log("Code soumis :", code);
-                // Envoyer au backend (Exemple avec fetch)
-
-                        // Appel AJAX pour rejoindre une partie
-                        fetch('/join_game', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ game_code: code })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.redirect) {
-                                // Rediriger vers l'URL reçue
-                                window.location.href = data.redirect;
-                            } else if (data.error) {
-                                // Gérer l'erreur (ex: code de partie invalide)
-                                alert(data.error);
-                            }
-                        })
-                        .catch(error => console.error('Erreur:', error));
-                    }
-
-                
-            };
-
-        document.getElementById('closeButton2').onclick = function () {
-            const codebox = document.getElementById('door');
-            const principal = document.getElementById('acceuil');
-            // Reset the codebox to its initial state
-            codebox.setAttribute('hidden', 'true'); 
-            principal.style.filter = 'blur(0px)';
-
-        };
-
-        document.getElementById('closeButton3').onclick = function () {
-            const user = document.getElementById('user_info');
-            // Reset the codebox to its initial state
-            user.setAttribute('hidden', 'true'); 
-            const principal = document.getElementById('acceuil');
-            principal.style.filter = 'blur(0px)';
-        };
-
-
-        function launchGame() {
-            fetch('/launch_game', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.redirect) {
-                    // Rediriger vers l'URL reçue
-                    window.location.href = data.redirect;
-                } else if (data.error) {
-                    // Gérer l'erreur (ex: code de partie invalide)
-                    alert(data.error);
-                }
-                })
-            .catch(error => console.error('Erreur:', error));
-        }
-        function checkGameStatus(gameCode) {
-            fetch(`/game_state?game_code=${gameCode}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.state === 'ready' || data.state === 'started') {
-                    // Rediriger vers la page de la partie
-                    window.location.href = `/game/${data.game_code}`;
-                } else {
-                    console.log('En attente du lancement de la partie...');
-                }
-            })
-            .catch(error => console.error('Erreur:', error));
-        }
-
-
-// Appeler la fonction checkGameStatus toutes les 3 secondes tant que le jeu n'est pas lancé
-        setInterval(() => {
-            const gameCode = "{{ game_code }}";  // Assurez-vous que cette variable est définie dans votre modèle
-            checkGameStatus(gameCode);
-        }, 3000);
-
+<script src="/static/myScript.js">
+    console.log('Script loaded');
 </script>
+
 
 {% endblock %}
