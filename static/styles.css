@@ -1,17 +1,39 @@
+#log {
+    position: relative; /* Ensure ::before overlay is positioned relative */
+    background-image: url("/static/babyfoot.png");
+    background-size: cover;
+    width: 100vw;
+    height: 100vh; /* Full viewport height */
+}
+
+#log::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+    z-index: 1; /* Below content in #log */
+}
+
 .centered-container {
     display: grid;
     background-color: #ffffff;
     width: 50%;
     text-align: center;
     position: absolute;
-    left: 25%;
-    top: 35%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Center the element */
     border-radius: 10mm;
-    border: 1px;
-    border-style: solid;
-    border-color: #a5d6a7;
-    
+    border: 1px solid #a5d6a7;
+    z-index: 2; /* Above ::before overlay */
+    padding: 20px; /* Spacing inside */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Optional shadow */
+    opacity: 0.8;
 }
+
 
 
 body {
@@ -114,11 +136,27 @@ nav a:hover {
     text-decoration: underline;
 }
 
-.hero {
+.hero{
     text-align: center;
     padding: 50px 20px;
-    background: linear-gradient(to bottom, #d1fae5, #10b981);
+    background: linear-gradient(to bottom, #4c8266, #50d2a9);
     color: white;
+}
+#hero {
+    background-color: #052319;
+    text-align: center;
+    color: white;
+    justify-content: space-evenly;
+    height: 50mm;
+    padding: 5mm;
+    border-bottom-left-radius: 50mm;
+    border-bottom-right-radius: 50mm;
+}
+
+#start, #join {
+     
+    margin-top: 10mm;
+    margin-right: 15mm;
 }
 
 .hero h1 {
@@ -159,12 +197,12 @@ nav a:hover {
 .feature img {
     width: 100px;
     height: 100px;
-    margin-bottom: 20px;
+    margin-bottom: -16px;
 }
 
 .feature h3 {
     font-size: 20px;
-    margin-bottom: 10px;
+    margin-bottom: -16px;
     color: #065f46;
 }
 
@@ -277,7 +315,7 @@ footer p {
 }
 #user_info {
     position: absolute;
-    top: 20%;
+    top: 15%;
     text-align: center;
     color: white;
     left: 70%;
@@ -325,7 +363,7 @@ table {
 
 #view_stats {
     position: absolute;
-    top: 88%;
+    top: 96%;
     text-align: center;
     color: white;
     left: 5%;
@@ -341,6 +379,11 @@ table {
 #stats_container {
     background-color: #4e7c4f;
     width: 200%;
+}
+
+#stats {
+
+    margin-bottom: 5mm;
 }
 
 table thead {
@@ -373,6 +416,7 @@ table td {
     text-align: left;
     font-size: 0.9rem;
     border-bottom: 1px solid #ddd;
+    color: #064e3b;
 }
 
 /* Profile Section Styling */
@@ -449,21 +493,195 @@ table td {
 #user_info a:hover {
     color: #2e5339; /* Dark green on hover */
 }
+html {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-/* Responsive Styling */
-@media (max-width: 768px) {
-    #user_info {
-        width: 90%;
-        padding: 15px;
+footer {
+    width: 100%; /* Ensures the footer spans the entire width */
+    color: #fff;
+    text-align: center;
+    margin-top: auto;
+    padding: 10px 0;
+
+}
+/* Mobile-Only Responsive Styles (Up to 480px) */
+@media (max-width: 480px) {
+    /* Adjust the #log background and height */
+    #log {
+        background-size: contain; /* Prevents background clipping */
+        height: 60vh; /* Reduced height for smaller screens */
     }
 
+    /* Centered Container */
+    .centered-container {
+        width: 90%; /* Full width on mobile */
+        padding: 10px; /* Add extra padding for readability */
+        top: 50%; /* Adjust for proper centering */
+    }
+
+    /* Input Fields */
+    input[type="text"], 
+    input[type="password"], 
+    input[type="email"] {
+        width: 100%; /* Inputs take full width */
+        font-size: 1rem; /* Slightly larger text for readability */
+    }
+
+    /* Buttons */
     button {
-        font-size: 0.9rem;
-        padding: 8px 15px;
+        font-size: 0.9rem; /* Adjust text size */
+        padding: 10px; /* Add padding for better touch experience */
+        width: 100%; /* Buttons take full width */
     }
 
+    /* Navigation */
+    nav {
+        flex-direction: column; /* Stack links vertically */
+        align-items: center; /* Center the links */
+    }
+
+    nav a {
+        margin: 10px 0; /* Add spacing between links */
+        font-size: 0.9rem; /* Smaller font size for mobile */
+    }
+
+    /* Footer */
+    footer {
+        font-size: 0.7rem; /* Adjust footer text size */
+        padding: 8px; /* Reduced padding for mobile */
+    }
+
+    /* Hero Section */
+    #hero {
+        height: auto; /* Allow the height to adjust naturally */
+        padding: 20px 10px; /* Add padding for mobile screens */
+        text-align: center; /* Center the text */
+    }
+
+    #start, #join {
+        width: 100%; /* Buttons take full width */
+        margin: 10px 0; /* Add spacing between buttons */
+    }
+
+    /* Profile Section */
     .profile {
-        width: 100px;
-        height: 100px;
+        width: 80px; /* Reduce profile picture size */
+        height: 80px;
+    }
+
+    #user_info {
+        width: 90%; /* Full width on mobile */
+        left: 5%; /* Centered horizontally */
+        padding: 15px; /* Add padding for better spacing */
+    }
+
+    /* Registration Form */
+    .regis {
+        width: 90%; /* Full width on mobile */
+        left: 5%; /* Center horizontally */
+        padding: 15px; /* Adjust spacing */
+        top: 20%; /* Adjust placement */
+    }
+
+    /* Adjust Code Input Container */
+    .code-container input {
+        width: 40px; /* Smaller inputs for mobile */
+        height: 40px;
+        font-size: 1rem; /* Readable font size */
+    }
+
+    /* Scoreboard */
+    .scoreboard {
+        flex-direction: column; /* Stack items vertically */
+        gap: 20px; /* Add spacing between players */
+        margin-top: 20px; /* Adjust spacing from top */
+    }
+
+    .player {
+        width: 90%; /* Full width on mobile */
+        margin: 0 auto; /* Center horizontally */
+    }
+
+    /* Reset Button */
+    .reset {
+        margin-top: 20px;
+        flex-direction: column; /* Stack buttons vertically */
+    }
+
+    /* Stats View */
+    #view_stats {
+        width: 90%; /* Full width on mobile */
+        left: 5%; /* Center horizontally */
+        bottom: 5%; /* Adjust position */
+        top: 140%;
+    }
+
+    /* Table Styling */
+    table {
+        font-size: 0.8rem; /* Smaller font size for mobile */
+        width: 100%; /* Full width */
+    }
+
+    table thead th, table td {
+        padding: 5px; /* Adjust cell padding */
+    }
+
+    table tbody tr:nth-child(odd), 
+    table tbody tr:nth-child(even) {
+        background-color: transparent; /* Simplify table styling */
+    }
+    #stats_table {
+        overflow-x: auto; /* Enable horizontal scrolling */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+        width: 50%;
+    }
+
+    #stats_container {
+        width: 53%;
+    }
+
+    /* About Section */
+    .about {
+        flex-direction: column; /* Stack items vertically */
+        margin: 10px 0; /* Adjust spacing */
+        text-align: center; /* Center the text */
+    }
+
+    #door {
+        width: auto;
+        position: absolute;
+        top: 40%;
+        text-align: center;
+        color: white;
+        left: 5%;
+        border: 1px solid #a5d6a7;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 3mm;
+        background-color: #1b5e20;
+        width: 110mm;
+    }
+
+    #launcher {
+    position: absolute;
+    top: 40%;
+    text-align: center;
+    color: white;
+    left: 16%;
+    border: 1px solid #a5d6a7;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 3mm;
+    background-color: #1b5e20;
+    width: 80mm;
     }
 }
+
+
+
+
+
+

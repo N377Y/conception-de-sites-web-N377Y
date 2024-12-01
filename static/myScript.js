@@ -1,4 +1,34 @@
-    document.getElementById('start').onclick = async function (e) {
+// Ensure all buttons are enabled on page refresh
+    toggleButtonsForAction('enable'); // Explicitly enable all buttons on page load
+
+
+function toggleButtonsForAction(action) {
+    const buttons = document.querySelectorAll('button'); // Select all buttons
+    buttons.forEach(button => {
+        switch (action) {
+            case 'join_game':
+                button.disabled = !button.id.includes('validate'); // Only enable the validate button
+                break;
+            case 'start_game':
+                button.disabled = !button.id.includes('startGameButton'); // Only enable the launch button
+                break;
+            case 'profile':
+                button.disabled = button.id !== 'change' && button.id !== 'save' && button.id !== 'update-status-btn'; // Enable profile-related buttons
+                break;
+            case 'see_stats':
+                button.disabled = true; // Disable all buttons
+                break;
+            case 'enable':
+                button.disabled = false; // Enable all buttons
+        }
+    });
+}
+
+
+
+
+
+document.getElementById('start').onclick = async function (e) {
         e.preventDefault();
 
         // Get the element to display the result
@@ -44,6 +74,22 @@
         // Append the box to the codebox container
         codebox.appendChild(bigBox);
 
+        // Generate the QR code
+        const qrData = "http://127.0.0.1:5000/game/"+code.join(''); // Combine all numbers into a string
+        const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrData)}&size=200x200`;
+        const qrImage = document.getElementById('qrcode');
+
+        if (qrImage) {
+            qrImage.src = qrCodeURL;
+        } else {
+            // If QR code container is missing, create it
+            const newQrImage = document.createElement('img');
+            newQrImage.id = 'qrcode';
+            newQrImage.src = qrCodeURL;
+            codebox.appendChild(newQrImage);
+        }
+        toggleButtonsForAction('start_game'); // Disable all except launch game
+
         } catch (error) {
             console.error('Error:', error);
 
@@ -53,6 +99,8 @@
             errorMessage.innerHTML = `<strong>Error:</strong> ${error.message}`;
             codebox.appendChild(errorMessage);
         }
+
+
     };
 
     // Close button logic
@@ -66,6 +114,7 @@
             // Hide the codebox by removing it from the DOM
             code.remove();
             principal.style.filter = 'blur(0px)';
+            toggleButtonsForAction('enable'); // Re-enable all buttons
 
 
         };
@@ -75,6 +124,7 @@
             user.removeAttribute('hidden');
             const principal = document.getElementById('acceuil');
             principal.style.filter = 'blur(5px)';
+            toggleButtonsForAction('profile'); // Disable all except launch game
         };
 
         document.getElementById('change').onclick = function (e) {
@@ -121,6 +171,7 @@
             if (joinButton) {
                 joinButton.addEventListener('click', function () {
                 console.log('Join button clicked'); // Debugging log
+                toggleButtonsForAction('join_game'); // Disable all except launch game
 
                 // Show the modal
                 const codebox = document.getElementById('door');
@@ -133,7 +184,7 @@
 
         document.getElementById('stats').onclick = async function (e) {
             e.preventDefault();
-
+            toggleButtonsForAction('see_stats'); // Disable all except launch game
             // Get the element to display the result
             const choice = document.getElementById('view_stats');
             choice.removeAttribute('hidden');
@@ -198,6 +249,7 @@
             // Reset the codebox to its initial state
             codebox.setAttribute('hidden', 'true'); 
             principal.style.filter = 'blur(0px)';
+            toggleButtonsForAction('enable'); // Re-enable all buttons
 
         };
 
@@ -207,6 +259,7 @@
             user.setAttribute('hidden', 'true'); 
             const principal = document.getElementById('acceuil');
             principal.style.filter = 'blur(0px)';
+            toggleButtonsForAction('enable'); // Re-enable all buttons
         };
 
         document.getElementById('closeButton4').onclick = function () {
@@ -217,6 +270,7 @@
             choice.setAttribute('hidden', 'true');
             const selectElement = document.getElementById('choose_user');
             selectElement.value = ''; // Reset the select element to its default value 
+            toggleButtonsForAction('enable'); // Re-enable all buttons
         };
 
 
@@ -270,7 +324,7 @@
             // Génère le HTML des statistiques
             let statsHTML = `<h2>Stats of User</h2>`;
             statsHTML += `
-                <table border="1" style="border-collapse: collapse; width: 100%;">
+                <table border="1" style="border-collapse: collapse;" id="stats_table">
                     <thead>
                         <tr>
                             <th>Player 1</th>
