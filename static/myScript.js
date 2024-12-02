@@ -331,6 +331,7 @@ document.getElementById('start').onclick = async function (e) {
                             <th>Player 2</th>
                             <th>Score Player 1</th>
                             <th>Score Player 2</th>
+                            <th>Winner</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -343,6 +344,7 @@ document.getElementById('start').onclick = async function (e) {
                         <td>${game.player2_username}</td>
                         <td>${game.score1}</td>
                         <td>${game.score2}</td>
+                        <td>${game.winner}</td>
                     </tr>
                 `;
             });

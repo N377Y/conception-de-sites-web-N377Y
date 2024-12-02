@@ -99,15 +99,17 @@ document.addEventListener("DOMContentLoaded", () => {
                                         <th>Player 2</th>
                                         <th>Score 1</th>
                                         <th>Score 2</th>
+                                        <th>Winner</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style=" margin-bottom: 10mm;">
                                     ${data.map(game => `
                                         <tr>
                                             <td>${game.player1_username}</td>
                                             <td>${game.player2_username}</td>
                                             <td>${game.score1}</td>
                                             <td>${game.score2}</td>
+                                            <td>${game.winner}</td>
                                         </tr>
                                     `).join("")}
                                 </tbody>

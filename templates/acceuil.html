@@ -65,6 +65,7 @@
                 <tr>
                     <th>Players</th>
                     <th>Score</th>
+                    <th>Winner</th>
                 </tr>
             </thead>
             <tbody >
@@ -73,6 +74,7 @@
                         
                         <td>{{ game.player1_username }} - {{ game.player2_username }}</td>
                         <td>{{ game.score1 }}-{{ game.score2}}</td>
+                        <td>{{ game.winner }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

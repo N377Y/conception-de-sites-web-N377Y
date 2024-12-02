@@ -20,6 +20,7 @@ CREATE TABLE games (
     state TEXT NOT NULL,  -- waiting, started, ended
     score1 INTEGER DEFAULT 0,
     score2 INTEGER DEFAULT 0,
+    winner TEXT,
     FOREIGN KEY (player1_id) REFERENCES users(id),
     FOREIGN KEY (player2_id) REFERENCES users(id)
 );

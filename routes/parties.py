@@ -51,24 +51,29 @@ def join_game():
     user_id = session.get('user_id')
     username = session.get('username')
 
-    # Vérifier si le code de jeu existe et son état
+    # Vérifier si le code de jeu existe
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
         return jsonify({'error': 'Code de partie invalide.'}), 404
 
-    # Vérifier l'état du jeu - Player 2 ne peut rejoindre que si la partie est "ready" ou "started"
-    if game[0]['state'] != 'started':
-        return jsonify({'error': 'La partie n\'est pas encore prête. Attendez que le créateur de la partie la lance.'}), 403
+    # Vérifier si la partie est complète (2 joueurs maximum)
+    if game[0]['player1_id'] and game[0]['player2_id']:
+        return jsonify({'error': 'La partie est déjà complète.'}), 403
 
-    # Mettre à jour la partie avec le deuxième joueur
-    db.execute("UPDATE games SET player2_id = ?, player2_username = ?  WHERE gameCode = ?", user_id, username, game_code)
+    # Vérifier l'état du jeu
+    if game[0]['state'] == 'waiting':
+        return jsonify({'error': 'La partie n\'est pas prête. Attendez que le créateur de la partie la lance.'}), 403
 
-    # Associer le joueur à la session
-    session['game_code'] = game_code
-    session['player_role'] = 'joiner'
+    # Ajouter l'utilisateur comme deuxième joueur
+    if not game[0]['player2_id']:
+        db.execute("UPDATE games SET player2_id = ?, player2_username = ? WHERE gameCode = ?", user_id, username, game_code)
+        session['game_code'] = game_code
+        session['player_role'] = 'joiner'
 
-    # Renvoyer l'URL à utiliser pour la redirection
-    return jsonify({'redirect': url_for('parties.partie', game_code=game_code)})
+        return jsonify({'redirect': url_for('parties.partie', game_code=game_code)})
+
+    return jsonify({'error': 'Impossible de rejoindre la partie.'}), 400
+
 
 
 
@@ -78,16 +83,21 @@ def launch_game():
     if not game_code:
         return jsonify({'error': 'Aucune partie en cours.'}), 403
 
-    # Vérifier si l'utilisateur est bien le créateur de la partie
+    # Vérifier si l'utilisateur est le créateur de la partie
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game or session['player_role'] != 'creator':
         return jsonify({'error': 'Vous n\'êtes pas autorisé à lancer cette partie.'}), 403
 
+    # Vérifier si la partie est déjà lancée
+    if game[0]['state'] == 'started':
+        return jsonify({'error': 'La partie est déjà lancée.'}), 400
+
     # Mettre à jour l'état de la partie à 'started'
     db.execute("UPDATE games SET state = 'started' WHERE gameCode = ?", game_code)
 
-    # Retourner une réponse pour informer que la partie est prête à commencer
-    return jsonify({'message': 'La partie est prête, le joueur 2 peut maintenant rejoindre.'})
+    return jsonify({'message': 'La partie est lancée. Le joueur 2 peut maintenant rejoindre.'})
+
+
 
 
 
@@ -146,44 +156,43 @@ def get_scores():
 def update_score():
     data = request.get_json()
     game_code = data.get('game_code')
-    userId = session.get('user_id')
-    player = data.get('player')
-    action = data.get('action')  # 'increment' or 'decrement'
+    user_id = session.get('user_id')
+    player = data.get('player')  # 1 pour joueur 1, 2 pour joueur 2
+    action = data.get('action')  # 'increment' ou 'decrement'
 
     if not game_code or not player or not action:
-        return jsonify({'error': 'Invalid data provided.'}), 400
+        return jsonify({'error': 'Données invalides.'}), 400
 
-    # Retrieve current scores
+    # Récupérer les scores actuels
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
-        return jsonify({'error': 'Game not found.'}), 404
+        return jsonify({'error': 'Partie introuvable.'}), 404
 
     game = game[0]
-    score1 = game['score1']
-    score2 = game['score2']
+    score1, score2 = game['score1'], game['score2']
 
-        # Update the appropriate score
-    if player == 1:
-        if int(game['player1_id']) == userId:
-            if action == 'increment':
-                score1 += 1
-            elif action == 'decrement' and score1 > 0:
-                score1 -= 1
-    elif player == 2:
-        if int(game['player2_id']) == userId:
-            if action == 'increment':
-                score2 += 1
-            elif action == 'decrement' and score2 > 0:
-                score2 -= 1
+    # Vérifier les droits de mise à jour
+    if player == 1 and int(game['player1_id']) == user_id:
+        if action == 'increment':
+            score1 += 1
+        elif action == 'decrement' and score1 > 0:
+            score1 -= 1
+    elif player == 2 and int(game['player2_id']) == user_id:
+        if action == 'increment':
+            score2 += 1
+        elif action == 'decrement' and score2 > 0:
+            score2 -= 1
+    else:
+        return jsonify({'error': 'Non autorisé à mettre à jour ce score.'}), 403
 
-        # Update the scores in the database
+    # Mettre à jour la base de données
     db.execute(
-            "UPDATE games SET score1 = ?, score2 = ? WHERE gameCode = ?",
-            score1, score2, game_code
-        )
-    
+        "UPDATE games SET score1 = ?, score2 = ? WHERE gameCode = ?",
+        score1, score2, game_code
+    )
 
-    return jsonify({'message': 'Score updated successfully.'}), 200
+    return jsonify({'message': 'Score mis à jour avec succès.'}), 200
+
 
 
 
@@ -208,8 +217,16 @@ def end_game():
     game_code = session.get('game_code')
     if not game_code:
         return jsonify({'error': 'Aucune partie en cours.'}), 403
+    
+    game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
+    if game[0]['score1'] > game[0]['score2']:
+        db.execute("UPDATE games SET winner = ? WHERE gameCode = ?", game[0]['player1_username'], game_code)
+    elif game[0]['score2'] > game[0]['score1']:
+        db.execute("UPDATE games SET winner = ? WHERE gameCode = ?", game[0]['player2_username'], game_code)
+    else:
+        db.execute("UPDATE games SET winner = 'Draw' WHERE gameCode = ?", game_code)
 
-    # Chqnger le statut la partie de la base de données
+    # Changer le statut la partie de la base de données
     db.execute("UPDATE games SET state = 'ended' WHERE gameCode = ?", game_code)
     session.pop('game_code', None)
     session.pop('player_role', None)
