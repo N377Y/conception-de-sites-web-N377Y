@@ -5,6 +5,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
     plan: free
-  - type: sqlite
-    name: database.db
-    plan: free
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///database.db
+
