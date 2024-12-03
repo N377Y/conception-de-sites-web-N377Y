@@ -75,7 +75,7 @@ document.getElementById('start').onclick = async function (e) {
         codebox.appendChild(bigBox);
 
         // Generate the QR code
-        const qrData = "http://127.0.0.1:5000/game/"+code.join(''); // Combine all numbers into a string
+        const qrData = "https://footelly.onrender.com/game/"+code.join(''); // Combine all numbers into a string
         const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(qrData)}&size=200x200`;
         const qrImage = document.getElementById('qrcode');
 
