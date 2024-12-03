@@ -1,155 +1,18 @@
 {% extends "layout.html" %}
 {% block body %}
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f6fff5;
-        margin: 0;
-        padding: 0;
-        color: #2e5339;
-        min-height: 100vh; /* Full height */
-    }
-
-    /* Title */
-    h1 {
-        font-size: 2rem;
-        margin: 20px 0;
-        text-align: center;
-        color: #2e5339;
-    }
-
-    /* Navigation Buttons */
-    nav {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    nav button {
-        background-color: #4a704f;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        margin: 0 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    nav button:hover {
-        background-color: #2e5339;
-        box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Table Styling */
-    table {
-        width: 90%;
-        margin: 20px auto;
-        border-collapse: collapse;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    table thead {
-        background-color: #4a704f;
-        color: #fff;
-    }
-
-    table thead th {
-        padding: 10px;
-        text-align: left;
-        font-size: 1rem;
-        border-bottom: 1px solid #ddd;
-    }
-
-    table tbody tr:nth-child(odd) {
-        background-color: #e6f2e5;
-    }
-
-    table tbody tr:nth-child(even) {
-        background-color: #fff;
-    }
-
-    table tbody tr:hover {
-        background-color: #cfe6d4;
-    }
-
-    table td {
-        padding: 10px;
-        text-align: left;
-        font-size: 0.9rem;
-        border-bottom: 1px solid #ddd;
-    }
-
-    section {
-        display: none; /* Hidden by default */
-    }
-
-    section.active {
-        display: block; /* Visible when active */
-    }
-
-    /* Modal Styling */
-    .modal {
-        display: none; /* Hidden by default */
-    }
-
-    .modal.show {
-        display: flex; /* Show modal when the 'show' class is added */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .modal-content {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 600px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        position: relative;
-    }
-
-    /* Close Button */
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 20px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #333;
-        cursor: pointer;
-    }
-
-    .close:hover {
-        color: #ff0000;
-    }
-
-    /* Section Hiding */
-    section {
-        display: none; /* Hidden by default */
-    }
-
-    section.active {
-        display: block; /* Display only the active section */
-    }
-</style>
-
+<link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
 <body>
+    <!-- Admin Dashboard Title -->
     <h1>Admin Dashboard</h1>
+
+    <!-- Navigation Menu -->
     <nav>
         <button id="view-users-btn">Manage Users</button>
         <button id="view-games-btn">Manage Games</button>
         <button id="admin-panel-btn">Admin Panel</button>
     </nav>
 
-    <!-- Users Section -->
+    <!-- Users Management Section -->
     <section id="users-section" class="active">
         <h2>Manage Users</h2>
         <table>
@@ -166,7 +29,7 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>
-                        <!-- Clickable username to view stats -->
+                        <!-- Username link to view user stats -->
                         <a href="#" class="view-stats" data-username="{{ user.username }}">
                             {{ user.username }}
                         </a>
@@ -185,12 +48,12 @@
             <span id="close-stats-modal" class="close">&times;</span>
             <h2>Stats for <span id="stats-username"></span></h2>
             <div id="stats-container">
-                <!-- Stats content will be dynamically loaded here -->
+                <!-- Dynamically loaded stats content -->
             </div>
         </div>
     </div>
 
-    <!-- Games Section -->
+    <!-- Games Management Section -->
     <section id="games-section">
         <h2>Manage Games</h2>
         <table>
@@ -222,6 +85,8 @@
     <!-- Admin Panel Section -->
     <section id="admin-panel-section">
         <h2>Admin Panel</h2>
+
+        <!-- Add User Form -->
         <div>
             <h3>Add User</h3>
             <form id="add-user-form">
@@ -239,6 +104,7 @@
             </form>
         </div>
 
+        <!-- Delete User Form -->
         <div>
             <h3>Delete User</h3>
             <form id="delete-user-form">
@@ -247,13 +113,17 @@
             </form>
         </div>
 
+        <!-- Global Settings -->
         <div>
             <h3>Global Settings</h3>
             <button id="clear-database-btn">Clear Database</button>
         </div>
     </section>
+
+    <!-- Logout Link -->
     <a href="/logout" style="display: block; margin-top: 20px;">Log Out</a>
 
+    <!-- Admin Dashboard Script -->
     <script src="/static/admin.js"></script>
 </body>
 {% endblock %}

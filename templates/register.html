@@ -1,16 +1,52 @@
 {% extends "layout.html" %}
 {% block body %}
+    <!-- Registration form -->
     <form action="/register" method="post" enctype="multipart/form-data">
         <div class="regis">
             <h1>Fill in your information</h1>
-            <input autocomplete="off" autofocus name="mail" placeholder="E-mail" type="email" required>
-            <input autocomplete="off" autofocus name="name" placeholder="Name" type="text" required>
-            <input autocomplete="off" autofocus name="username" placeholder="Username" type="text" required>
-            <input autocomplete="off" autofocus name="pwd" placeholder="Password" type="password" required>
-            <label for="status"> Make profile public?
-                <input type="checkbox" id="status" name="status">
+            <!-- Email input field -->
+            <input 
+                autocomplete="off" 
+                autofocus 
+                name="mail" 
+                placeholder="E-mail" 
+                type="email" 
+                required>
+            <!-- Name input field -->
+            <input 
+                autocomplete="off" 
+                autofocus 
+                name="name" 
+                placeholder="Name" 
+                type="text" 
+                required>
+            <!-- Username input field -->
+            <input 
+                autocomplete="off" 
+                autofocus 
+                name="username" 
+                placeholder="Username" 
+                type="text" 
+                required>
+            <!-- Password input field -->
+            <input 
+                autocomplete="off" 
+                autofocus 
+                name="pwd" 
+                placeholder="Password" 
+                type="password" 
+                required>
+            <!-- Checkbox for profile visibility -->
+            <label for="status"> 
+                Make profile public?
+                <input 
+                    type="checkbox" 
+                    id="status" 
+                    name="status">
             </label><br>
+            <!-- Submit button to register -->
             <button type="submit">Register</button>
+            <!-- Link to navigate to the login page if the user already has an account -->
             <a href="/login">Already have an account? Log in!</a>
         </div>
     </form>

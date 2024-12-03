@@ -5,111 +5,104 @@ from flask_session import Session
 from cs50 import SQL
 import random
 
-# Création du Blueprint
+# Create the Blueprint for game-related routes
 parties_routes = Blueprint('parties', __name__)
 
-# Initialisation de la base de données
-if not os.path.exists("database.db"):
-    open("database.db", "w").close()
-    db = SQL("sqlite:///database.db")
-    # Créer la table si elle n'existe pas
+# Initialize the database
+if not os.path.exists("database.db"):  # Check if the database file exists
+    open("database.db", "w").close()  # Create an empty database file if not
+    db = SQL("sqlite:///database.db")  # Connect to the SQLite database
+    # Create tables if they don't exist
     with open("database.sql", "r") as sql_file:
         sql_statements = sql_file.read().split(';')
         for statement in sql_statements:
-            if statement.strip():
+            if statement.strip():  # Avoid empty statements
                 db.execute(statement)
 else:
-    db = SQL("sqlite:///database.db")
-
+    db = SQL("sqlite:///database.db")  # Connect to the existing SQLite database
 
 @parties_routes.route('/start_game', methods=['POST'])
 def start_game():
-    # Generate a random game code
+    """Start a new game by generating a game code."""
+    # Generate a random 6-digit game code
     num = [random.randint(0, 9) for _ in range(6)]
     game_code = ''.join(map(str, num))
-    user_id = session.get('user_id')
-    username = session.get('username')
+    user_id = session.get('user_id')  # Get the current user's ID from the session
+    username = session.get('username')  # Get the current user's username from the session
 
-    # Insert the game in the database with the initial state 'waiting'
+    # Insert the game into the database with the initial state 'waiting'
     db.execute(
         "INSERT INTO games (gameCode, state, player1_id, player1_username) VALUES (?, ?, ?, ?)",
         game_code, "waiting", user_id, username
     )
 
-    # Store game code in session
+    # Store the game code and role in the session
     session['game_code'] = game_code
     session['player_role'] = 'creator'
 
-    return jsonify(num)
-
-
+    return jsonify(num)  # Return the generated game code as JSON
 
 @parties_routes.route('/join_game', methods=['POST'])
 def join_game():
-    data = request.get_json()
-    game_code = data.get('game_code')
-    user_id = session.get('user_id')
-    username = session.get('username')
+    """Allow a user to join an existing game."""
+    data = request.get_json()  # Parse JSON request data
+    game_code = data.get('game_code')  # Get the game code from the request
+    user_id = session.get('user_id')  # Get the current user's ID from the session
+    username = session.get('username')  # Get the current user's username from the session
 
-    # Vérifier si le code de jeu existe
+    # Check if the game code exists
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
-        return jsonify({'error': 'Code de partie invalide.'}), 404
+        return jsonify({'error': 'Invalid game code.'}), 404
 
-    # Vérifier si la partie est complète (2 joueurs maximum)
+    # Check if the game is already full (maximum 2 players)
     if game[0]['player1_id'] and game[0]['player2_id']:
-        return jsonify({'error': 'La partie est déjà complète.'}), 403
+        return jsonify({'error': 'The game is already full.'}), 403
 
-    # Vérifier l'état du jeu
+    # Check the game's state
     if game[0]['state'] == 'waiting':
-        return jsonify({'error': 'La partie n\'est pas prête. Attendez que le créateur de la partie la lance.'}), 403
+        return jsonify({'error': 'The game is not ready yet. Wait for the creator to launch it.'}), 403
 
-    # Ajouter l'utilisateur comme deuxième joueur
+    # Add the user as the second player
     if not game[0]['player2_id']:
         db.execute("UPDATE games SET player2_id = ?, player2_username = ? WHERE gameCode = ?", user_id, username, game_code)
         session['game_code'] = game_code
         session['player_role'] = 'joiner'
 
-        return jsonify({'redirect': url_for('parties.partie', game_code=game_code)})
+        return jsonify({'redirect': url_for('parties.partie', game_code=game_code)})  # Redirect to the game page
 
-    return jsonify({'error': 'Impossible de rejoindre la partie.'}), 400
-
-
-
+    return jsonify({'error': 'Unable to join the game.'}), 400
 
 @parties_routes.route('/launch_game', methods=['POST'])
 def launch_game():
-    game_code = session.get('game_code')
+    """Launch the game and update its state."""
+    game_code = session.get('game_code')  # Get the game code from the session
     if not game_code:
-        return jsonify({'error': 'Aucune partie en cours.'}), 403
+        return jsonify({'error': 'No ongoing game.'}), 403
 
-    # Vérifier si l'utilisateur est le créateur de la partie
+    # Check if the user is the creator of the game
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game or session['player_role'] != 'creator':
-        return jsonify({'error': 'Vous n\'êtes pas autorisé à lancer cette partie.'}), 403
+        return jsonify({'error': 'You are not authorized to launch this game.'}), 403
 
-    # Vérifier si la partie est déjà lancée
+    # Check if the game is already started
     if game[0]['state'] == 'started':
-        return jsonify({'error': 'La partie est déjà lancée.'}), 400
+        return jsonify({'error': 'The game is already started.'}), 400
 
-    # Mettre à jour l'état de la partie à 'started'
+    # Update the game's state to 'started'
     db.execute("UPDATE games SET state = 'started' WHERE gameCode = ?", game_code)
 
-    return jsonify({'message': 'La partie est lancée. Le joueur 2 peut maintenant rejoindre.'})
-
-
-
-
-
+    return jsonify({'message': 'The game has started. Player 2 can now join.'})
 
 @parties_routes.route('/game/<game_code>', methods=['GET'])
 def partie(game_code):
+    """Render the game page for a specific game code."""
     # Check if the user is logged in
     if 'user_id' not in session:
         flash("Please log in to access the game.", "error")
-        return redirect(url_for("login"))
+        return redirect(url_for("log.login"))
 
-    # Get the game from the database
+    # Retrieve the game from the database
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
         return jsonify({'error': 'Game not found.'}), 404
@@ -119,7 +112,7 @@ def partie(game_code):
     player1_id = int(game['player1_id'])
     player2_id = int(game['player2_id']) if game['player2_id'] else None
 
-    # Debugging prints
+    # Debugging information
     print(f"user_id (session): {user_id} (type: {type(user_id)})")
     print(f"player1_id (game): {player1_id} (type: {type(player1_id)})")
     print(f"player2_id (game): {player2_id} (type: {type(player2_id)})")
@@ -135,43 +128,41 @@ def partie(game_code):
 
     return render_template('partie.html', game_code=game_code, player1_username=player1_username, player2_username=player2_username, user_id=user_id)
 
-
 @parties_routes.route('/get_scores', methods=['GET'])
 def get_scores():
-    game_code = request.args.get('game_code')
+    """Get the current scores for a specific game."""
+    game_code = request.args.get('game_code')  # Retrieve the game code from the request
     if not game_code:
         return jsonify({'error': 'Game code not provided.'}), 400
 
-    # Retrieve game data
+    # Retrieve game data from the database
     game = db.execute("SELECT score1, score2 FROM games WHERE gameCode = ?", game_code)
     if not game:
         return jsonify({'error': 'Game not found.'}), 404
 
-    game = game[0]
-    return jsonify({'score1': game['score1'], 'score2': game['score2']}), 200
-
-
+    return jsonify({'score1': game[0]['score1'], 'score2': game[0]['score2']}), 200
 
 @parties_routes.route('/update_score', methods=['POST'])
 def update_score():
-    data = request.get_json()
-    game_code = data.get('game_code')
-    user_id = session.get('user_id')
-    player = data.get('player')  # 1 pour joueur 1, 2 pour joueur 2
-    action = data.get('action')  # 'increment' ou 'decrement'
+    """Update the score for a player in the game."""
+    data = request.get_json()  # Parse JSON request data
+    game_code = data.get('game_code')  # Get the game code
+    user_id = session.get('user_id')  # Get the current user's ID from the session
+    player = data.get('player')  # Player identifier (1 for player1, 2 for player2)
+    action = data.get('action')  # Action ('increment' or 'decrement')
 
     if not game_code or not player or not action:
-        return jsonify({'error': 'Données invalides.'}), 400
+        return jsonify({'error': 'Invalid data.'}), 400
 
-    # Récupérer les scores actuels
+    # Retrieve the current game
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
-        return jsonify({'error': 'Partie introuvable.'}), 404
+        return jsonify({'error': 'Game not found.'}), 404
 
     game = game[0]
     score1, score2 = game['score1'], game['score2']
 
-    # Vérifier les droits de mise à jour
+    # Verify update permissions
     if player == 1 and int(game['player1_id']) == user_id:
         if action == 'increment':
             score1 += 1
@@ -183,41 +174,38 @@ def update_score():
         elif action == 'decrement' and score2 > 0:
             score2 -= 1
     else:
-        return jsonify({'error': 'Non autorisé à mettre à jour ce score.'}), 403
+        return jsonify({'error': 'Not authorized to update this score.'}), 403
 
-    # Mettre à jour la base de données
+    # Update the database
     db.execute(
         "UPDATE games SET score1 = ?, score2 = ? WHERE gameCode = ?",
         score1, score2, game_code
     )
 
-    return jsonify({'message': 'Score mis à jour avec succès.'}), 200
-
-
-
+    return jsonify({'message': 'Score updated successfully.'}), 200
 
 @parties_routes.route('/game_state', methods=['GET'])
 def game_state():
-    """Récupérer l'état de la partie actuelle."""
-    game_code = session.get('game_code')
+    """Retrieve the state of the current game."""
+    game_code = session.get('game_code')  # Get the game code from the session
     if not game_code:
         return jsonify({'error': 'Game code not provided.'}), 400
 
-    # Récupérer les données de la partie
+    # Retrieve the game from the database
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if not game:
-        return jsonify({'error': 'Partie introuvable.'}), 404
+        return jsonify({'error': 'Game not found.'}), 404
 
     return jsonify({'game_code': game_code, 'state': game[0]['state']}), 200
 
-
 @parties_routes.route('/end_game', methods=['POST'])
 def end_game():
-    """Terminer la partie actuelle."""
-    game_code = session.get('game_code')
+    """End the current game and update its state."""
+    game_code = session.get('game_code')  # Get the game code from the session
     if not game_code:
-        return jsonify({'error': 'Aucune partie en cours.'}), 403
-    
+        return jsonify({'error': 'No ongoing game.'}), 403
+
+    # Retrieve the game from the database
     game = db.execute("SELECT * FROM games WHERE gameCode = ?", game_code)
     if game[0]['score1'] > game[0]['score2']:
         db.execute("UPDATE games SET winner = ? WHERE gameCode = ?", game[0]['player1_username'], game_code)
@@ -226,12 +214,12 @@ def end_game():
     else:
         db.execute("UPDATE games SET winner = 'Draw' WHERE gameCode = ?", game_code)
 
-    # Changer le statut la partie de la base de données
+    # Update the game's state to 'ended'
     db.execute("UPDATE games SET state = 'ended' WHERE gameCode = ?", game_code)
-    session.pop('game_code', None)
-    session.pop('player_role', None)
+    session.pop('game_code', None)  # Remove the game code from the session
+    session.pop('player_role', None)  # Remove the player role from the session
 
-    flash(f"Game {game_code} ended by {session.get('username')}", 'success')
-    redirect_url = url_for('user_profile', user_id=session.get('user_id'))
+    flash(f"Game {game_code} ended by {session.get('username')}", 'success')  # Flash a success message
+    redirect_url = url_for('user.user_profile', user_id=session.get('user_id'))  # Redirect to the user's profile
 
-    return jsonify({'message': 'Partie terminée avec succès.','redirect': redirect_url}), 200
+    return jsonify({'message': 'Game ended successfully.', 'redirect': redirect_url}), 200

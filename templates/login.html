@@ -1,18 +1,40 @@
 {% extends "layout.html" %}
 {% block body %}
     <body id="log">
+        <!-- Main container for the login/register functionality -->
         <div class="centered-container">
             <h1>Welcome!</h1>
             {% if name %}
-                <!-- TODO -->
-                You are logged in as {{ name }}. <a href="/logout">Log out</a>.
+                <!-- Display this section if the user is already logged in -->
+                You are logged in as {{ name }}. 
+                <!-- Logout link -->
+                <a href="/logout">Log out</a>.
             {% else %}
-                    <form action="/login" method="post" class="main_container">
-                        <input autocomplete="off" autofocus class="login_info" name="name" placeholder="Username" type="text" required>
-                        <input autocomplete="off" autofocus class="login_info" name="pwd" placeholder="Password" type="password" required>
-                        <button type="submit">Log In</button>
-                    </form>
-                    <p><a href="{{ url_for('register') }}">Register</a></p>
+                <!-- Display the login form if the user is not logged in -->
+                <form action="/login" method="post" class="main_container">
+                    <!-- Username input -->
+                    <input 
+                        autocomplete="off" 
+                        autofocus 
+                        class="login_info" 
+                        name="name" 
+                        placeholder="Username" 
+                        type="text" 
+                        required>
+                    <!-- Password input -->
+                    <input 
+                        autocomplete="off" 
+                        autofocus 
+                        class="login_info" 
+                        name="pwd" 
+                        placeholder="Password" 
+                        type="password" 
+                        required>
+                    <!-- Submit button for login -->
+                    <button type="submit">Log In</button>
+                </form>
+                <!-- Link to the registration page -->
+                <p><a href="{{ url_for('log.register') }}">Don't have an account yet? Register now!</a></p>
             {% endif %}
         </div>
     </body>

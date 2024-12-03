@@ -2,9 +2,10 @@
 {% block body %}
 </head>
 <body>
-    <h1>Compteur de Score</h1>
+    <!-- Title -->
+    <h1>Score Counter</h1>
     <div class="scoreboard">
-        <!-- Joueur 1 -->
+        <!-- Player 1 -->
         <div class="player" id="player1">
             <h2>{{ player1_username }}</h2>
             <div class="score" id="score1">0</div>
@@ -16,7 +17,7 @@
             {% endif %}
         </div>
 
-        <!-- Joueur 2 -->
+        <!-- Player 2 -->
         <div class="player" id="player2">
             <h2>{{ player2_username }}</h2>
             <div class="score" id="score2">0</div>
@@ -29,27 +30,27 @@
         </div>
     </div>
 
-    <!-- Bouton de réinitialisation -->
+    <!-- Reset Button -->
     <div class="reset">
-        <button onclick="resetScores()">Réinitialiser</button>
+        <button onclick="resetScores()">Reset</button>
     </div>
 
-    <!-- Bouton pour revenir à la page d'accueil -->
+    <!-- Button to go back to the homepage -->
     <div class="back-home">
         <button id="leaveGameButton" onclick="leaveGame()">End Game</button>
     </div>
 
     <script>
-        // Variables pour stocker les scores des joueurs
+        // Variables to store the players' scores
         let score1 = 0;
         let score2 = 0;
         const userId = "{{ user_id }}";
 
-
+        // Game code for the current session
         const gameCode = "{{ game_code }}";
-        console.log("Code de la partie:", gameCode);
+        console.log("Game Code:", gameCode);
 
-        // Fonction pour incrémenter le score d'un joueur
+        // Function to increment a player's score
         function incrementScore(player) {
             fetch('/update_score', {
                 method: 'POST',
@@ -74,6 +75,7 @@
             .catch(error => console.error('Error:', error));
         }
 
+        // Function to decrement a player's score
         function decrementScore(player) {
             fetch('/update_score', {
                 method: 'POST',
@@ -98,8 +100,7 @@
             .catch(error => console.error('Error:', error));
         }
 
-
-        // Fonction pour réinitialiser les scores des joueurs
+        // Function to reset the scores for both players
         function resetScores() {
             score1 = 0;
             score2 = 0;
@@ -107,40 +108,32 @@
             document.getElementById('score2').textContent = score2;
         }
 
-        function goHome() {
-                        fetch('/join_game', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify({ game_code: code })
-                                    })
-                    }
-
-                    // Fonction pour rediriger vers la page d'accueil
+        // Function to leave the current game and redirect
         function leaveGame() {
-                fetch('/end_game', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include' // Include cookies in the request
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.redirect) {
-                        console.log(data.message);
-                        // Redirect to the user's profile page with user_id
-                        window.location.href = data.redirect;
-                    } else if (data.error) {
-                        console.error('Error:', data.error);
-                        alert('Error: ' + data.error);
-                    } else if (data.message) {
-                        console.log(data.message);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            }
+            fetch('/end_game', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include' // Include cookies in the request
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.redirect) {
+                    console.log(data.message);
+                    // Redirect to the user's profile page
+                    window.location.href = data.redirect;
+                } else if (data.error) {
+                    console.error('Error:', data.error);
+                    alert('Error: ' + data.error);
+                } else if (data.message) {
+                    console.log(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to check the game's status
         function checkGameStatus(gameCode) {
             fetch(`/game_state?game_code=${gameCode}`, {
                 method: 'GET',
@@ -152,14 +145,16 @@
             .then(response => response.json())
             .then(data => {
                 if (data.state === 'ended') {
-                    //Rediriger vers la page de la partie
-                    window.location.href = '/user/'+userId;
+                    // Redirect to the user's profile page
+                    window.location.href = '/user/' + userId;
                 } else {
-                    console.log('Partie en cours...');
+                    console.log('Game in progress...');
                 }
             })
-            .catch(error => console.error('Erreur:', error));
+            .catch(error => console.error('Error:', error));
         }
+
+        // Function to fetch the current scores for both players
         function fetchScores() {
             fetch(`/get_scores?game_code=${gameCode}`, {
                 method: 'GET',
@@ -183,11 +178,13 @@
             })
             .catch(error => console.error('Error:', error));
         }
-            setInterval(() => {
-                const gameCode = "{{ game_code }}";  // Assurez-vous que cette variable est définie dans votre modèle
-                checkGameStatus(gameCode);
-                fetchScores();
-            }, 3000);
+
+        // Periodically check the game status and fetch scores
+        setInterval(() => {
+            const gameCode = "{{ game_code }}"; // Ensure this variable is defined in your template
+            checkGameStatus(gameCode);
+            fetchScores();
+        }, 3000);
     </script>
 </body>
 {% endblock %}
