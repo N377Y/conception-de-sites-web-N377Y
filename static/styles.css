@@ -590,7 +590,7 @@ footer {
 
     /* Adjust Code Input Container */
     .code-container input {
-        width: 40px; /* Smaller inputs for mobile */
+        width: 20px; /* Smaller inputs for mobile */
         height: 40px;
         font-size: 1rem; /* Readable font size */
     }
@@ -664,7 +664,7 @@ footer {
         border-radius: 5px;
         margin-bottom: 3mm;
         background-color: #1b5e20;
-        width: 110mm;
+        width: 90mm;
     }
 
     #launcher {
@@ -672,7 +672,7 @@ footer {
     top: 40%;
     text-align: center;
     color: white;
-    left: 16%;
+    left: 8%;
     border: 1px solid #a5d6a7;
     padding: 10px;
     border-radius: 5px;
