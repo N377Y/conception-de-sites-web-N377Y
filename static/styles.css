@@ -582,8 +582,8 @@ footer {
 
     /* Registration Form */
     .regis {
-        width: 85%; /* Full width on mobile */
-        left: 5%; /* Center horizontally */
+        width: 90%; /* Full width on mobile */
+        left: 2%; /* Center horizontally */
         padding: 15px; /* Adjust spacing */
         top: 20%; /* Adjust placement */
     }
