@@ -10,6 +10,9 @@ CREATE TABLE users (
     role TEXT DEFAULT 'user'
 );
 
+INSERT INTO users (username, password, mail, name, profile_picture, status, role)
+VALUES ('admin', 'admin', 'admin@gmail.com', 'Administrator', NULL, 'private', 'admin');
+
 CREATE TABLE games (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     gameCode TEXT NOT NULL,
