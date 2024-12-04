@@ -11,7 +11,7 @@ CREATE TABLE users (
 );
 
 INSERT INTO users (username, password, mail, name, profile_picture, status, role)
-VALUES ('admin', 'admin', 'admin@gmail.com', 'Administrator', NULL, 'private', 'admin');
+VALUES ('admin', '$2b$12$XgPLXTd4a1gY9YaAXpTysuX9WoUrFVjPpcNwQP6ut1v7Q3s//.DG.', 'admin@gmail.com', 'Administrator', NULL, 'private', 'admin');
 
 CREATE TABLE games (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
